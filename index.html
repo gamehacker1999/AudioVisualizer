@@ -2,12 +2,41 @@
 <html lang="en">
     <head>
         <title>Audio Visualizer</title>
-        
+        <link rel="stylesheet" href="styles.css" type="text/css"> <!--css file-->
+        <script href="main.js"></script> <!--javascript file-->
+        <link href="" rel="stylesheet" type="text/css"> <!--font-->
     </head>
-    
     <body>
         <canvas width="600" height="400"></canvas>
         <audio></audio>
+        <div id="controls">
+            <section>
+                <label>Song: 
+                    <select id="songSelect">
+                        <option value="media/New Adventure Theme.mp3">New Adventure Theme</option>
+                        <option value="media/Peanuts Theme.mp3" selected>Peanuts Theme</option>
+                        <option value="media/The Picard Song.mp3">The Picard Song</option>
+                    </select>
+                </label>
+            </section>
+            <section>
+                <button id="playButton" data-playing="no">Play</button>
+                <button id="fullScreenButton">Full Screen</button>
+            </section>
+            <section>
+                <label>Volume: 
+                   <input type="range" id="volumeSlider" min="0" max="100" value="50" step="0.01">
+                   <label id="volumeLabel">100</label>
+                </label>
+            </section>
+            <section>Progress Indicator
+            </section>
+            <section>Sliders - brightness
+            </section>
+            <section>Checkboxes
+            </section>
+            <section>Radio buttons
+            </section>
+        </div>
     </body>
-    
 </html>

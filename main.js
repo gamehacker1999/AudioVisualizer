@@ -14,6 +14,7 @@ let analyzerNode;
 let gainNode;
 let destinationNode;
 let audioData;
+let waveform;
 
 //distortion filters
 let lowshelfBiquadFilter;
@@ -21,6 +22,9 @@ let highshelfBiquadFileter;
 let reverberateFilter;
 
 let playing = false;
+
+let sunCenterX;
+let sunCenterY;
 
 const NUM_SAMPLES = 128;
 
@@ -35,6 +39,10 @@ let noise = false;
 let invert = false;
 let sepia = false;
 
+let frameCounter;
+
+let image1;
+
 window.onload = init;
 
 function init(){
@@ -48,7 +56,7 @@ function init(){
     canvasCenterY = canvas.height/2;
     
     ctx.fillStyle = 'black';
-    ctx.fillRect(0,0,600,480);
+    ctx.fillRect(0,0,canvas.width,canvas.height);
     
     audioElement = document.querySelector('audio');
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -68,7 +76,10 @@ function init(){
     analyzerNode.fftSize = NUM_SAMPLES;
     
     //audio data has numSamples/2 bins
-    audioData = new Uint8Array(NUM_SAMPLES/2); 
+    audioData = new Uint8Array(NUM_SAMPLES/2);
+    
+    //waveform data
+    waveform = new Uint8Array(NUM_SAMPLES/2);
     
     // creating a gain (volume) node
     gainNode = audioCtx.createGain();
@@ -78,6 +89,14 @@ function init(){
     sourceNode.connect(analyzerNode);
     analyzerNode.connect(gainNode);
     gainNode.connect(audioCtx.destination);
+    
+    sunCenterX = canvas.width/2;
+    sunCenterY = 400;
+    
+    //loading images
+    image1 = document.querySelector('#chair1');
+    
+    frameCounter=0;
     
     //setting up the UI
     setupUI();
@@ -156,40 +175,56 @@ function setupUI(){
 function update(){
     requestAnimationFrame(update);
     
+    frameCounter++;
+    
     ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
     let grad = ctx.createLinearGradient(0,0,0,ctx.canvas.height);
-    grad.addColorStop(0,'#d3959b');
-    grad.addColorStop(1, '#bfe6ba');
-    ctx.fillStyle = grad;
+    grad.addColorStop(0,'#fb7ba2');
+    grad.addColorStop(1, '#fce043');
+    ctx.fillStyle = grad;    
     
-    ctx.fillRect(0,0,600,480);
+    ctx.fillRect(0,0,canvas.width,canvas.height);
     
     analyzerNode.getByteFrequencyData(audioData);
+    
+    analyzerNode.getByteTimeDomainData(waveform);
+    
+    //sunCenterX+=0.5;
+    //sunCenterY+=0.5;
+    
+    if(sunCenterY>canvas.height+80){
+        sunCenterX=-50;
+        sunCenterY=-50;
+    }
     
     //saving the current canvas state
     ctx.save();
     grad.addColorStop(0,'#fc354c');
     grad.addColorStop(1, '#0fbabc');
     
-    ctx.fillStyle = grad;
-    ctx.strokeStyle = grad;
+    ctx.fillStyle = 'yellow';
+    ctx.strokeStyle = 'white';
     ctx.lineWidth = 5;
     
     //drawing the circle
     ctx.beginPath();
-    ctx.arc(canvasCenterX,canvasCenterY,100,0,Math.PI*2);
+    ctx.arc(sunCenterX,sunCenterY,100,0,Math.PI*2);
     ctx.closePath();
-    ctx.stroke();
+    //ctx.stroke();
+    ctx.fill();
     
     let rects = 50;
     let angle = Math.PI*2/rects;
     
+    let max = 0;
     for(let i=0;i<50;i++){
         
         ctx.save();
-        ctx.translate(canvasCenterX,canvasCenterY);
-        ctx.rotate(angle*i);
+        ctx.translate(sunCenterX,sunCenterY);
+        ctx.rotate(angle*i+15);
         let width = audioData[i]*0.5;
+        
+        if(waveform[i]>max) max = waveform[i]*0.5;
         
         let x = (canvasCenterX)+(Math.cos(angle*i))*100;
         let y = (canvasCenterY)+(Math.sin(angle*i))*100;
@@ -201,9 +236,62 @@ function update(){
         
     }
     
+    ctx.globalAlpha=1.0;
+    ctx.fillStyle = '#fdd8b5';
+    ctx.fillRect(0,canvas.height/1.3,canvas.width,canvas.height);
+    
+    ctx.globalAlpha = 1.0;
+    
+        for(let i=0;i<80;i++){
+        
+        ctx.save();
+        //ctx.translate(sunCenterX,sunCenterY);
+        //ctx.rotate(angle*i+15);
+        let height = audioData[i]*0.3;
+        
+        let x = (canvasCenterX)+(Math.cos(angle*i))*100;
+        let y = (canvasCenterY)+(Math.sin(angle*i))*100;
+        
+        ctx.fillStyle='blue';
+        ctx.strokeStyle = 'blue';
+        ctx.fillRect(i*12.5,canvas.height*2/3,13,height+60.5);
+        
+        ctx.restore();
+        
+    }
+      
     ctx.restore();
     
+    drawClouds(400,100,max);
+    drawClouds(700,250,max);
+    drawClouds(900,100,max);
+    drawClouds(180,250,max);
+    ctx.drawImage(image1,300,380);
     manipulatePixels();
+    
+}
+
+function drawClouds(x,y,max=0){
+    ctx.save();
+    //setting shadows
+    ctx.shadowOffsetX = max/7;
+    ctx.shadowOffsetY=max/11;
+    ctx.shadowColor = 'silver';
+    ctx.scale(0.6,0.6);
+    ctx.strokeStyle = 'white';
+    ctx.fillStyle='white';
+    ctx.beginPath();
+    ctx.moveTo(x,y);
+    ctx.bezierCurveTo(x-40,y+20,x-40,y+70,x+60,y+70);
+    ctx.bezierCurveTo(x+80,y+100,x+150,y+100,x+170,y+70);
+    ctx.bezierCurveTo(x+250,y+70,x+250,y+40,x+220,y+20);
+    ctx.bezierCurveTo(x+260,y-40,x+200,y-50,x+170,y-30);
+    ctx.bezierCurveTo(x+150,y-75,x+80,y-60,x+80,y-30);
+    ctx.bezierCurveTo(x+30,y-75,x-20,y-60,x,y);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.fill();
+    ctx.restore();
     
 }
 

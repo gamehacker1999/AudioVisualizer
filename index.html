@@ -7,7 +7,7 @@
         <link href="" rel="stylesheet" type="text/css"> <!--font-->
     </head>
     <body>
-        <canvas width="600" height="400"></canvas>
+        <canvas width="800" height="600"></canvas>
         <audio controls></audio>
         <div id="controls">
             <section>
@@ -40,7 +40,12 @@
                 <input type="checkbox" id="invertCB"> <label>Invert</label>
             </section>
             <section>Radio buttons
+                <input type="radio" name="filter" id="baseRadio"> <label>LowShelf</label>
+                <input type="radio" name="filter" id="trebleRadio"> <label>HighShelf</label>
+                <input type="radio" name="filter" id="reverbRadio"> <label>Reverb</label>
             </section>
+            
+            <img src="images/chair2.png" id="chair1">
         </div>
     </body>
 </html>

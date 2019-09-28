@@ -21,13 +21,23 @@ let waveform;
 
 //distortion filters
 let lowshelfBiquadFilter;
-let highshelfBiquadFileter;
+let highshelfBiquadFilter;
 let reverberateFilter;
+
+//distortion booleans
+let highshelf;
+let lowshelf;
+let noEffect;
 
 let playing = false;
 
 let sunCenterX;
 let sunCenterY;
+
+let cloudPos1;
+let cloudPos2;
+let cloudPos3;
+let cloudPos4;
 
 const NUM_SAMPLES = 128;
 
@@ -45,6 +55,7 @@ let sepia = false;
 let frameCounter;
 
 let image1;
+let image2;
 
 window.onload = init;
 
@@ -60,6 +71,16 @@ function init(){
     
     ctx.fillStyle = 'black';
     ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    //cloud position
+    cloudPos1 = 400
+    cloudPos2 = 700
+    cloudPos3 = 900
+    cloudPos4 = 180
+
+    //sun positions
+    sunCenterX = canvas.width/2;
+    sunCenterY = 400;
     
     audioElement = document.querySelector('audio');
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -87,19 +108,32 @@ function init(){
     // creating a gain (volume) node
     gainNode = audioCtx.createGain();
     gainNode.gain.value = 1;
-    
+
+    //creating biquad filters
+    highshelfBiquadFilter = audioCtx.createBiquadFilter();
+    highshelfBiquadFilter.type = "highshelf";
+    sourceNode.connect(highshelfBiquadFilter);
+    highshelfBiquadFilter.connect(analyzerNode);
+
+    lowshelfBiquadFilter = audioCtx.createBiquadFilter();
+    lowshelfBiquadFilter.type = "lowshelf";
+    sourceNode.connect(lowshelfBiquadFilter);
+    lowshelfBiquadFilter.connect(analyzerNode);
+
     // connecting the nodes - we now have an audio graph
     sourceNode.connect(analyzerNode);
     analyzerNode.connect(gainNode);
     gainNode.connect(audioCtx.destination);
     
-    sunCenterX = canvas.width/2;
-    sunCenterY = 400;
-    
     //loading images
     image1 = document.querySelector('#chair1');
+    image2 = document.querySelector("#ball");
     
     frameCounter=0;
+    
+    highshelf=false;
+    lowshelf=false;
+    noEffect=true;
     
     //setting up the UI
     setupUI();
@@ -171,7 +205,38 @@ function setupUI(){
     
     document.querySelector('#noiseCB').checked = noise;
     document.querySelector('#noiseCB').onchange = e => noise=e.target.checked;
+
+    //setting up radio buttons
+    document.querySelector("#baseRadio").checked = lowshelf;
+    document.querySelector("#baseRadio").onchange = e =>{
+        lowshelf = e.target.checked;
+        noEffect=false;
+        highshelf=false;
+        toggleHighShelf();
+        toggleLowShelf();
+    }
+
+    toggleLowShelf();
+
+    document.querySelector("#trebleRadio").checked=highshelf;
+    document.querySelector("#trebleRadio").onchange = e=>{
+        highshelf=e.target.checked;
+        noEffect = false;
+        lowshelf=false;
+        toggleLowShelf();
+        toggleHighShelf();
+    }
+
+    toggleHighShelf(); 
     
+    document.querySelector("#noEffectRadio").checked = noEffect;
+    document.querySelector("#noEffectRadio").onchange = e=>{
+        lowshelf=false;
+        highshelf=false;
+        toggleLowShelf();
+        toggleHighShelf();
+        noEffect=!noEffect;
+    }
     
 }
 
@@ -248,8 +313,7 @@ function update(){
         for(let i=0;i<80;i++){
         
         ctx.save();
-        //ctx.translate(sunCenterX,sunCenterY);
-        //ctx.rotate(angle*i+15);
+
         let height = audioData[i]*0.3;
         
         let x = (canvasCenterX)+(Math.cos(angle*i))*100;
@@ -263,26 +327,59 @@ function update(){
         
     }
       
-    ctx.restore();
+
+    //updating cloud positions and wrapping them around
+    cloudPos1+=1/4;
+    if((cloudPos1*0.6)>canvas.width+20)
+        cloudPos1=-245;
+
+    cloudPos2+=1/4;
+    if((cloudPos2*0.6)>canvas.width+20)
+        cloudPos2=-245;
+
+    cloudPos3+=1/4;
+    if((cloudPos3*0.6)>canvas.width+20)
+        cloudPos3=-245;
+
+    cloudPos4+=1/4;
+    if((cloudPos4*0.6)>canvas.width+20)
+        cloudPos4=-245;
     
-    drawClouds(400,100,max);
-    drawClouds(700,250,max);
-    drawClouds(900,100,max);
-    drawClouds(180,250,max);
+    //drawing clouds
+    drawClouds(cloudPos1,100,max);
+    drawClouds(cloudPos2,250,max);
+    drawClouds(cloudPos3,100,max);
+    drawClouds(cloudPos4,250,max);
+
+    //adding images
     ctx.drawImage(image1,300,380);
+
+    ctx.shadowOffsetX = 1;
+    ctx.shadowOffsetY=8;
+    ctx.shadowColor = '#8a795d';
+    ctx.drawImage(image2,600,530);
+
+    //adding photoshipish effects
     manipulatePixels();
+
+    ctx.restore();
+
     
 }
 
 function drawClouds(x,y,max=0){
     ctx.save();
+
     //setting shadows
     ctx.shadowOffsetX = max/7;
     ctx.shadowOffsetY=max/11;
     ctx.shadowColor = 'silver';
+
+    //style for shadow
     ctx.scale(0.6,0.6);
     ctx.strokeStyle = 'white';
     ctx.fillStyle='white';
+
     ctx.beginPath();
     ctx.moveTo(x,y);
     ctx.bezierCurveTo(x-40,y+20,x-40,y+70,x+60,y+70);
@@ -296,6 +393,28 @@ function drawClouds(x,y,max=0){
     ctx.fill();
     ctx.restore();
     
+}
+
+function toggleHighShelf(){
+    if(highshelf){
+        highshelfBiquadFilter.frequency.setValueAtTime(1000,audioCtx.currentTime);
+        highshelfBiquadFilter.gain.setValueAtTime(15,audioCtx.currentTime);
+    }
+    else{
+        highshelfBiquadFilter.frequency.setValueAtTime(0,audioCtx.currentTime);
+        highshelfBiquadFilter.gain.setValueAtTime(0,audioCtx.currentTime);
+    }
+}
+
+function toggleLowShelf(){
+    if(lowshelf){
+        lowshelfBiquadFilter.frequency.setValueAtTime(1000,audioCtx.currentTime);
+        lowshelfBiquadFilter.gain.setValueAtTime(15,audioCtx.currentTime);
+    }
+    else{
+        lowshelfBiquadFilter.frequency.setValueAtTime(0,audioCtx.currentTime);
+        lowshelfBiquadFilter.gain.setValueAtTime(0,audioCtx.currentTime);
+    }
 }
 
 function manipulatePixels(){

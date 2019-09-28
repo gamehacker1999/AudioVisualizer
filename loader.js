@@ -1,6 +1,4 @@
-//import init function
-import {init} from './main.js';
-//call init
-init();
+import {init} from './init.js';
+window.onload = init;
 
 //import * as dat from 'dat.gui';

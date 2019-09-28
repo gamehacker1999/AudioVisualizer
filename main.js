@@ -3,6 +3,8 @@
 //import * as dat from 'dat.gui';
 //const gui = new dat.GUI();
 
+export {init};
+
 //canvas variables
 let canvas;
 let ctx;
@@ -57,10 +59,9 @@ let frameCounter;
 let image1;
 let image2;
 
-window.onload = init;
+//window.onload = init;
 
 function init(){
-    
     //getting the canvas element and 2d context
     canvas = document.querySelector('canvas');
     ctx = canvas.getContext('2d');
@@ -485,4 +486,3 @@ function requestFullscreen(element) {
     // .. and do nothing if the method is not supported
 }
 
-export {init};

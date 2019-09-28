@@ -1,4 +1,4 @@
-import {init} from './init.js';
-window.onload = init;
+import {init} from './main.js';
+init();
 
 //import * as dat from 'dat.gui';

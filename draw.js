@@ -1,4 +1,6 @@
-function drawClouds(x,y,max=0){
+export {drawClouds, manipulatePixels};
+
+function drawClouds(x,y,max=0, ctx){
     ctx.save();
 
     //setting shadows
@@ -26,7 +28,7 @@ function drawClouds(x,y,max=0){
     
 }
 
-function manipulatePixels(){
+function manipulatePixels(ctx, tintRed, invert, noise, sepia){
     let imageData = ctx.getImageData(0,0,ctx.canvas.width,ctx.canvas.height);
     
     let data = imageData.data;

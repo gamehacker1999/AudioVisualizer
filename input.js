@@ -1,24 +1,4 @@
-function toggleHighShelf(){
-    if(highshelf){
-        highshelfBiquadFilter.frequency.setValueAtTime(1000,audioCtx.currentTime);
-        highshelfBiquadFilter.gain.setValueAtTime(15,audioCtx.currentTime);
-    }
-    else{
-        highshelfBiquadFilter.frequency.setValueAtTime(0,audioCtx.currentTime);
-        highshelfBiquadFilter.gain.setValueAtTime(0,audioCtx.currentTime);
-    }
-}
-
-function toggleLowShelf(){
-    if(lowshelf){
-        lowshelfBiquadFilter.frequency.setValueAtTime(1000,audioCtx.currentTime);
-        lowshelfBiquadFilter.gain.setValueAtTime(15,audioCtx.currentTime);
-    }
-    else{
-        lowshelfBiquadFilter.frequency.setValueAtTime(0,audioCtx.currentTime);
-        lowshelfBiquadFilter.gain.setValueAtTime(0,audioCtx.currentTime);
-    }
-}
+export {requestFullscreen,toggleHighShelf,toggleLowShelf};
 
 function requestFullscreen(element) {
     
@@ -35,4 +15,26 @@ function requestFullscreen(element) {
         element.webkitRequestFullscreen();
     }
     // .. and do nothing if the method is not supported
+}
+
+function toggleHighShelf(highshelfBiquadFilter,highshelf,audioCtx){
+    if(highshelf){
+        highshelfBiquadFilter.frequency.setValueAtTime(1000,audioCtx.currentTime);
+        highshelfBiquadFilter.gain.setValueAtTime(15,audioCtx.currentTime);
+    }
+    else{
+        highshelfBiquadFilter.frequency.setValueAtTime(0,audioCtx.currentTime);
+        highshelfBiquadFilter.gain.setValueAtTime(0,audioCtx.currentTime);
+    }
+}
+
+function toggleLowShelf(lowshelfBiquadFilter,lowshelf,audioCtx){
+    if(lowshelf){
+        lowshelfBiquadFilter.frequency.setValueAtTime(1000,audioCtx.currentTime);
+        lowshelfBiquadFilter.gain.setValueAtTime(15,audioCtx.currentTime);
+    }
+    else{
+        lowshelfBiquadFilter.frequency.setValueAtTime(0,audioCtx.currentTime);
+        lowshelfBiquadFilter.gain.setValueAtTime(0,audioCtx.currentTime);
+    }
 }

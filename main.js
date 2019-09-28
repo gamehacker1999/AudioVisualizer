@@ -1,5 +1,8 @@
 'use strict'
 
+//import * as dat from 'dat.gui';
+//const gui = new dat.GUI();
+
 //canvas variables
 let canvas;
 let ctx;

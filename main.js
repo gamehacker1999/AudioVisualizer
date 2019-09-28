@@ -366,4 +366,4 @@ function requestFullscreen(element) {
     // .. and do nothing if the method is not supported
 }
 
-
+export {init};

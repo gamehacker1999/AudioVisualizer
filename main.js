@@ -1,5 +1,5 @@
 
-//import * as dat from 'dat.gui';
+//import * as dat from './dat.gui/dat.gui-master/build/dat.gui.js';
 //const gui = new dat.GUI();
 
 import {drawClouds,manipulatePixels} from './draw.js';
@@ -263,7 +263,7 @@ function update(){
     ctx.drawImage(image2,600,530);
 
     //adding photoshipish effects
-    manipulatePixels(ctx,tintRed,invert,noise,sepia);
+    //manipulatePixels(ctx,tintRed,invert,noise,sepia);
 
     ctx.restore();
 }
@@ -287,14 +287,14 @@ function setupUI(){
         if(playing===false){
             playing = true;
             audioElement.play();
-            //e.target.innerHTML = 'Pause';
+            e.target.innerHTML = 'Pause';
         }
         
         //else pause it
         else{
             playing=false;
             audioElement.pause();
-            //e.target.innerHTML = 'Play';
+            e.target.innerHTML = 'Play';
         }
     };
     

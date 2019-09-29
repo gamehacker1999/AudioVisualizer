@@ -4,7 +4,7 @@
 
 import {drawClouds,manipulatePixels} from './draw.js';
 import {requestFullscreen,toggleHighShelf,toggleLowShelf} from './input.js';
-export {init};
+export {init,audioCtx,highshelfBiquadFilter,lowshelfBiquadFilter,gainNode,audioElement};
 
 //canvas variables
 let canvas;
@@ -136,7 +136,7 @@ function init(){
     noEffect=true;
     
     //setting up the UI
-    setupUI();
+    //setupUI();
     
     //updating
     update();
@@ -268,7 +268,7 @@ function update(){
     ctx.restore();
 }
 
-function setupUI(){
+/*function setupUI(){
     //full screen button
     let fsButton = document.querySelector('#fullScreenButton');
     fsButton.onclick = e => {
@@ -363,4 +363,4 @@ function setupUI(){
         noEffect=!noEffect;
     }
     
-}
+}*/

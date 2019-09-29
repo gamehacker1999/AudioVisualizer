@@ -1,4 +1,4 @@
-export {drawClouds, manipulatePixels, tinter};
+export {drawClouds, manipulatePixels};
 
 function drawClouds(x,y,max=0, ctx){
     ctx.save();
@@ -26,21 +26,6 @@ function drawClouds(x,y,max=0, ctx){
     ctx.fill();
     ctx.restore();
     
-}
-
-function tinter(ctx, tintRed) {
-    let imageData = ctx.getImageData(0,0,ctx.canvas.width,ctx.canvas.height);
-    
-    let data = imageData.data;
-    let length = data.length;
-    let width = imageData.width;
-    
-    for(let i = 0;i<length;i+=4){
-        
-        if(tintRed)
-            data[i]+=100;
-    }
-    ctx.putImageData(imageData,0,0);
 }
 
 function manipulatePixels(ctx, tintRed, invert, noise, sepia){

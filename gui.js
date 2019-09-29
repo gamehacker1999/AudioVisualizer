@@ -1,7 +1,12 @@
 import {requestFullscreen,toggleHighShelf,toggleLowShelf} from './input.js';
-import {drawClouds, manipulatePixels, tinter} from './draw.js';
-let canvas = document.querySelector('canvas')
+import {drawClouds, manipulatePixels} from './draw.js';
+let canvas = document.querySelector('canvas');
 let ctx = canvas.getContext('2d');
+
+let tinted = false;
+let inverted = false;
+let noised = false;
+let sepiad = false;
 
 let ControlPanel = function() {
   this.Play = function(){  };
@@ -14,9 +19,9 @@ let ControlPanel = function() {
   this.Invert = false;
   this.Duration = 0;
 };
-let controls = new ControlPanel();
+
 window.onload = function() {
-    
+    let controls = new ControlPanel();    
     let gui = new dat.GUI();
     gui.add(controls, 'Play'); //click
 
@@ -27,9 +32,9 @@ window.onload = function() {
 
     let f1 = gui.addFolder('Display'); //folder - then just use f1.add(...); and f1.open();
     let tint = f1.add(controls, 'Tint'); //checkbox
-    f1.add(controls, 'Sepia'); //checkbox    
-    f1.add(controls, 'Noise'); //checkbox 
-    f1.add(controls, 'Invert'); //checkbox
+    let sepia = f1.add(controls, 'Sepia'); //checkbox    
+    let noise = f1.add(controls, 'Noise'); //checkbox 
+    let invert = f1.add(controls, 'Invert'); //checkbox
 
     //changes to gui
     volumeSlider.onChange(function(value) {
@@ -38,6 +43,19 @@ window.onload = function() {
     });
 
     tint.onChange(function(value){
+      tinted = !tinted;
+    });
+
+    invert.onChange(function(value){
+      inverted = !inverted;
+    });
+
+    noise.onChange(function(value){
+      noised = !noised;
+    });
+
+    sepia.onChange(function(value){
+      sepiad = !sepiad;
     });
     
     /*controller.onFinishChange(function(value) {
@@ -50,9 +68,8 @@ window.onload = function() {
 
     let update = function() {
       requestAnimationFrame(update);
-      console.log(ctrls.Tint);
-      tinter(ctx, ctrls.Tint);
+      manipulatePixels(ctx, tinted, inverted, noised, sepiad);
     };
 
-    update(controls);
+    update();
 };

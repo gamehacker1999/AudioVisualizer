@@ -49,9 +49,11 @@ let ControlPanel = function () {
   this.Sepia = false;
   this.Noise = false;
   this.Invert = false;
-  this.highshelf = false;
-  this.lowshelf = false;
-  this.noEffect = true;
+  this.Highshelf = false;
+  this.Lowshelf = false;
+  this.NoEffect = true;
+  this.Distortion = false;
+  this.DistortionValue = 0;
   this.Duration = 0;
 };
 
@@ -73,9 +75,13 @@ window.onload = function () {
   let invert = f1.add(controls, 'Invert'); //checkbox
 
   let f2 = gui.addFolder('Effects');
-  let highshelf = f2.add(controls, 'highshelf').listen();
-  let lowshelf = f2.add(controls, 'lowshelf').listen();
-  let noEffect = f2.add(controls, 'noEffect').listen();
+  let highshelf = f2.add(controls, 'Highshelf').listen();
+  let lowshelf = f2.add(controls, 'Lowshelf').listen();
+  let noEffect = f2.add(controls, 'NoEffect').listen();
+
+  let f3 = gui.addFolder('Wave Distortion');
+  let distortion = f3.add(controls,'Distortion');
+  let distortionSlider = f3.add(controls,'DistortionValue',0,100);
 
   //changes to gui
   volumeSlider.onChange(function (value) {

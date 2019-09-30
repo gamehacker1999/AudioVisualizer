@@ -24,7 +24,6 @@ let ControlPanel = function () {
 
   this.Play = function () {
     //if audio context is suspended then resume it
-    debugger;
     if (audioCtx.state === 'suspended') {
       audioCtx.resume();
     }
@@ -113,44 +112,44 @@ window.onload = function () {
   });
 
   highshelf.onChange(function (value) {
-    if (controls.highshelf = true) {
-      controls.noEffect = false;
-      controls.lowshelf = false;
+    if (controls.Highshelf = true) {
+      controls.NoEffect = false;
+      controls.Lowshelf = false;
       highShelfed = true;
     }
     else {
       highShelfed = false;
     }
 
-    toggleHighShelf(highshelfBiquadFilter, controls.highshelf, audioCtx);
-    toggleLowShelf(lowshelfBiquadFilter, controls.lowshelf, audioCtx);
+    toggleHighShelf(highshelfBiquadFilter, controls.Highshelf, audioCtx);
+    toggleLowShelf(lowshelfBiquadFilter, controls.Lowshelf, audioCtx);
 
   });
 
-  toggleHighShelf(highshelfBiquadFilter, controls.highshelf, audioCtx);
+  toggleHighShelf(highshelfBiquadFilter, controls.Highshelf, audioCtx);
 
   lowshelf.onChange(function (value) {
-    if (controls.lowshelf = true) {
-      controls.noEffect = false;
-      controls.highshelf = false;
+    if (controls.Lowshelf = true) {
+      controls.NoEffect = false;
+      controls.Highshelf = false;
     }
 
-    toggleLowShelf(lowshelfBiquadFilter, controls.lowshelf, audioCtx);
-    toggleHighShelf(highshelfBiquadFilter, controls.highshelf, audioCtx);
+    toggleLowShelf(lowshelfBiquadFilter, controls.Lowshelf, audioCtx);
+    toggleHighShelf(highshelfBiquadFilter, controls.Highshelf, audioCtx);
 
 
   });
 
-  toggleLowShelf(lowshelfBiquadFilter, controls.lowshelf, audioCtx);
+  toggleLowShelf(lowshelfBiquadFilter, controls.Lowshelf, audioCtx);
 
   noEffect.onChange(function (value) {
-    if (controls.noEffect = true) {
-      controls.highshelf = false;
-      controls.lowshelf = false;
+    if (controls.NoEffect = true) {
+      controls.Highshelf = false;
+      controls.Lowshelf = false;
     }
 
-    toggleLowShelf(lowshelfBiquadFilter, controls.lowshelf, audioCtx);
-    toggleHighShelf(highshelfBiquadFilter, controls.highshelf, audioCtx);
+    toggleLowShelf(lowshelfBiquadFilter, controls.Lowshelf, audioCtx);
+    toggleHighShelf(highshelfBiquadFilter, controls.Highshelf, audioCtx);
   });
 
   /*controller.onFinishChange(function(value) {

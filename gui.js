@@ -174,11 +174,28 @@ function datGUI()
     //updating automatically (i.e. for progress bar for music)
     gui.add(controls, 'Duration', 0, 100).listen();
 
-    let update = function () {
-      requestAnimationFrame(update);
-      manipulatePixels(ctx, tinted, inverted, noised, sepiad);
-    };
+    update(playButton);
+  };
 
-    update();
+  let update = function (playButton) {
+    //passing playbutton so that this value can be switched
+    requestAnimationFrame(function(){
+      update(playButton);
+    });
+
+    //changing pixel values
+    manipulatePixels(ctx, tinted, inverted, noised, sepiad);
+
+    //if song is playing then play button should say pause
+    //else it should say play
+    if(playing){
+      playButton.domElement.previousSibling.innerHTML='Pause';
+    }
+
+    else{
+      playButton.domElement.previousSibling.innerHTML='Play';
+    }
+
+
   };
 }

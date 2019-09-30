@@ -79,9 +79,19 @@ function datGUI()
     let brightnessSlider = f1.add(controls, 'Brightness', 0, 100);
 
     let f2 = gui.addFolder('Effects');
+
+    //converting the effect checkboxes to radio buttons
     let highshelf = f2.add(controls, 'Highshelf').listen();
+    let highshelfInput = [].slice.call(highshelf.domElement.childNodes);
+    highshelfInput[0].type='radio';
+
     let lowshelf = f2.add(controls, 'Lowshelf').listen();
+    let lowshelfInput = [].slice.call(lowshelf.domElement.childNodes);
+    lowshelfInput[0].type='radio';
+
     let noEffect = f2.add(controls, 'NoEffect').listen();
+    let noEffectInput = [].slice.call(noEffect.domElement.childNodes);
+    noEffectInput[0].type='radio';
 
     let f3 = gui.addFolder('Wave Distortion');
     let distortion = f3.add(controls,'Distortion');
@@ -176,11 +186,28 @@ function datGUI()
     //updating automatically (i.e. for progress bar for music)
     gui.add(controls, 'Duration', 0, 100).listen();
 
-    let update = function () {
-      requestAnimationFrame(update);
-      manipulatePixels(ctx, tinted, inverted, noised, sepiad);
-    };
+    update(playButton);
+  };
 
-    update();
+  let update = function (playButton) {
+    //passing playbutton so that this value can be switched
+    requestAnimationFrame(function(){
+      update(playButton);
+    });
+
+    //changing pixel values
+    manipulatePixels(ctx, tinted, inverted, noised, sepiad);
+
+    //if song is playing then play button should say pause
+    //else it should say play
+    if(playing){
+      playButton.domElement.previousSibling.innerHTML='Pause';
+    }
+
+    else{
+      playButton.domElement.previousSibling.innerHTML='Play';
+    }
+
+
   };
 }

@@ -4,7 +4,7 @@
 
 import {drawClouds,manipulatePixels} from './draw.js';
 import {requestFullscreen,toggleHighShelf,toggleLowShelf} from './input.js';
-export {init,audioCtx,highshelfBiquadFilter,lowshelfBiquadFilter,gainNode,audioElement};
+export {init,audioCtx,highshelfBiquadFilter,lowshelfBiquadFilter,gainNode,audioElement,distortionFilter};
 
 //canvas variables
 let canvas;
@@ -26,6 +26,7 @@ let waveform;
 let lowshelfBiquadFilter;
 let highshelfBiquadFilter;
 let reverberateFilter;
+let distortionFilter;
 
 //distortion booleans
 let highshelf;
@@ -119,6 +120,10 @@ function init(){
     lowshelfBiquadFilter.type = "lowshelf";
     sourceNode.connect(lowshelfBiquadFilter);
     lowshelfBiquadFilter.connect(analyzerNode);
+
+    distortionFilter = audioCtx.createWaveShaper();
+    sourceNode.connect(distortionFilter);
+    distortionFilter.connect(analyzerNode);
 
     // connecting the nodes - we now have an audio graph
     sourceNode.connect(analyzerNode);

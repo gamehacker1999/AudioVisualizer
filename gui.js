@@ -1,10 +1,11 @@
-import { requestFullscreen, toggleHighShelf, toggleLowShelf } from './input.js';
+import { requestFullscreen, toggleHighShelf, toggleLowShelf, toggleDistortion } from './input.js';
 import { manipulatePixels } from './draw.js';
-import { audioCtx, highshelfBiquadFilter, lowshelfBiquadFilter, gainNode, audioElement } from './main.js'
+import { audioCtx, highshelfBiquadFilter, lowshelfBiquadFilter, gainNode, audioElement, distortionFilter } from './main.js'
 
 export {datGUI, brightnessAmount};
 
 let brightnessAmount = 100;
+let distortionAmount = 0;
 
 function datGUI()
 {
@@ -20,6 +21,7 @@ function datGUI()
 
   //audio variables
   let playing=false;
+  let distorted = false;
 
   let ControlPanel = function () {
 
@@ -83,7 +85,7 @@ function datGUI()
 
     let f3 = gui.addFolder('Wave Distortion');
     let distortion = f3.add(controls,'Distortion');
-    let distortionSlider = f3.add(controls,'DistortionValue',0,100);
+    let distortionSlider = f3.add(controls,'DistortionValue', 0, 100);
 
     //changes to gui
     volumeSlider.onChange(function (value) {
@@ -93,6 +95,10 @@ function datGUI()
     brightnessSlider.onChange(function (value) {
       gainNode.gain.value = value / 100.0;
       brightnessAmount = value;
+    });
+
+    distortionSlider.onChange(function (value) {
+        distortionAmount = value;
     });
 
     gainNode.gain.value = controls.Volume / 100;
@@ -117,6 +123,11 @@ function datGUI()
 
     sepia.onChange(function (value) {
       sepiad = !sepiad;
+    });
+
+    distortion.onChange(function(value){
+      distorted = !distorted;
+      toggleDistortion(distorted, distortionFilter, distortionAmount);
     });
 
     highshelf.onChange(function (value) {

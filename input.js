@@ -1,4 +1,4 @@
-export {requestFullscreen,toggleHighShelf,toggleLowShelf};
+export {requestFullscreen,toggleHighShelf,toggleLowShelf, toggleDistortion};
 
 function requestFullscreen(element) {
     
@@ -38,3 +38,22 @@ function toggleLowShelf(lowshelfBiquadFilter,lowshelf,audioCtx){
         lowshelfBiquadFilter.gain.setValueAtTime(0,audioCtx.currentTime);
     }
 }
+
+function toggleDistortion(distortion, distortionFilter, distortionAmount){
+    if(distortion){
+      distortionFilter.curve = null; // being paranoid and trying to trigger garbage collection
+      distortionFilter.curve = makeDistortionCurve(distortionAmount);
+    }else{
+      distortionFilter.curve = null;
+    }
+  }
+  
+  // from: https://developer.mozilla.org/en-US/docs/Web/API/WaveShaperNode
+function makeDistortionCurve(amount=20) {
+    let n_samples = 256, curve = new Float32Array(n_samples);
+    for (let i =0 ; i < n_samples; ++i ) {
+        let x = i * 2 / n_samples - 1;
+        curve[i] = (Math.PI + amount) * x / (Math.PI + amount * Math.abs(x));
+    }
+    return curve;
+    }

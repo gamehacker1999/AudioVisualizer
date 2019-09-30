@@ -2,168 +2,173 @@ import { requestFullscreen, toggleHighShelf, toggleLowShelf } from './input.js';
 import { manipulatePixels } from './draw.js';
 import { audioCtx, highshelfBiquadFilter, lowshelfBiquadFilter, gainNode, audioElement } from './main.js'
 
-//getting canvas and ctx
-let canvas = document.querySelector('canvas');
-let ctx = canvas.getContext('2d');
+export {datGUI};
 
-//bitmap effects
-let tinted = false;
-let inverted = false;
-let noised = false;
-let sepiad = false;
+function datGUI()
+{
+  //getting canvas and ctx
+  let canvas = document.querySelector('canvas');
+  let ctx = canvas.getContext('2d');
 
-//sound effects
-let highShelfed = false;
-let lowShelfed = false;
-let noEffect = true;
+  //bitmap effects
+  let tinted = false;
+  let inverted = false;
+  let noised = false;
+  let sepiad = false;
 
-//audio variables
-let playing=false;
+  //sound effects
+  let highShelfed = false;
+  let lowShelfed = false;
+  let noEffect = true;
 
-let ControlPanel = function () {
+  //audio variables
+  let playing=false;
 
-  this.Play = function () {
-    //if audio context is suspended then resume it
-    if (audioCtx.state === 'suspended') {
-      audioCtx.resume();
-    }
+  let ControlPanel = function () {
 
-    //if the music wasn't playing then play it
-    if (playing === false) {
-      playing = true;
-      audioElement.play();
-    }
+    this.Play = function () {
+      //if audio context is suspended then resume it
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
 
-    //else pause it
-    else {
-      playing = false;
-      audioElement.pause();
-    }
+      //if the music wasn't playing then play it
+      if (playing === false) {
+        playing = true;
+        audioElement.play();
+      }
+
+      //else pause it
+      else {
+        playing = false;
+        audioElement.pause();
+      }
+    };
+
+    this.Volume = 50;
+    this.Song = "Peanuts Theme";
+    this.FullScreen = e => { requestFullscreen(canvas) };
+    this.Tint = false;
+    this.Sepia = false;
+    this.Noise = false;
+    this.Invert = false;
+    this.Highshelf = false;
+    this.Lowshelf = false;
+    this.NoEffect = true;
+    this.Distortion = false;
+    this.DistortionValue = 0;
+    this.Duration = 0;
   };
 
-  this.Volume = 50;
-  this.Song = "Peanuts Theme";
-  this.FullScreen = e => { requestFullscreen(canvas) };
-  this.Tint = false;
-  this.Sepia = false;
-  this.Noise = false;
-  this.Invert = false;
-  this.Highshelf = false;
-  this.Lowshelf = false;
-  this.NoEffect = true;
-  this.Distortion = false;
-  this.DistortionValue = 0;
-  this.Duration = 0;
-};
+  window.onload = function () {
+    let controls = new ControlPanel();
+    let gui = new dat.GUI();
+    let playButton = gui.add(controls, 'Play'); //click
 
-window.onload = function () {
-  let controls = new ControlPanel();
-  let gui = new dat.GUI();
-  let playButton = gui.add(controls, 'Play'); //click
+    let volumeSlider = gui.add(controls, 'Volume', 0, 100); //slider from -5 to 5
 
-  let volumeSlider = gui.add(controls, 'Volume', 0, 100); //slider from -5 to 5
+    gui.add(controls, 'FullScreen'); //click
+    let trackSelect = gui.add(controls, 'Song', ["New Adventure Theme", "Peanuts Theme",
+    "The Picard Song"]); //drop down
 
-  gui.add(controls, 'FullScreen'); //click
-  let trackSelect = gui.add(controls, 'Song', ["New Adventure Theme", "Peanuts Theme",
-   "The Picard Song"]); //drop down
+    let f1 = gui.addFolder('Display'); //folder - then just use f1.add(...); and f1.open();
+    let tint = f1.add(controls, 'Tint'); //checkbox
+    let sepia = f1.add(controls, 'Sepia'); //checkbox    
+    let noise = f1.add(controls, 'Noise'); //checkbox 
+    let invert = f1.add(controls, 'Invert'); //checkbox
 
-  let f1 = gui.addFolder('Display'); //folder - then just use f1.add(...); and f1.open();
-  let tint = f1.add(controls, 'Tint'); //checkbox
-  let sepia = f1.add(controls, 'Sepia'); //checkbox    
-  let noise = f1.add(controls, 'Noise'); //checkbox 
-  let invert = f1.add(controls, 'Invert'); //checkbox
+    let f2 = gui.addFolder('Effects');
+    let highshelf = f2.add(controls, 'Highshelf').listen();
+    let lowshelf = f2.add(controls, 'Lowshelf').listen();
+    let noEffect = f2.add(controls, 'NoEffect').listen();
 
-  let f2 = gui.addFolder('Effects');
-  let highshelf = f2.add(controls, 'Highshelf').listen();
-  let lowshelf = f2.add(controls, 'Lowshelf').listen();
-  let noEffect = f2.add(controls, 'NoEffect').listen();
+    let f3 = gui.addFolder('Wave Distortion');
+    let distortion = f3.add(controls,'Distortion');
+    let distortionSlider = f3.add(controls,'DistortionValue',0,100);
 
-  let f3 = gui.addFolder('Wave Distortion');
-  let distortion = f3.add(controls,'Distortion');
-  let distortionSlider = f3.add(controls,'DistortionValue',0,100);
+    //changes to gui
+    volumeSlider.onChange(function (value) {
+      gainNode.gain.value = value / 100.0;
+    });
 
-  //changes to gui
-  volumeSlider.onChange(function (value) {
-    gainNode.gain.value = value / 100.0;
-  });
+    gainNode.gain.value = controls.Volume / 100;
 
-  gainNode.gain.value = controls.Volume / 100;
+    trackSelect.onChange(function(value){
+      audioElement.src='media/'+value+'.mp3'; 
+      playing=true;
+      controls.Play(playButton);      
+    });
 
-  trackSelect.onChange(function(value){
-    audioElement.src='media/'+value+'.mp3'; 
-    playing=true;
-    controls.Play(playButton);      
-  });
+    tint.onChange(function (value) {
+      tinted = !tinted;
+    });
 
-  tint.onChange(function (value) {
-    tinted = !tinted;
-  });
+    invert.onChange(function (value) {
+      inverted = !inverted;
+    });
 
-  invert.onChange(function (value) {
-    inverted = !inverted;
-  });
+    noise.onChange(function (value) {
+      noised = !noised;
+    });
 
-  noise.onChange(function (value) {
-    noised = !noised;
-  });
+    sepia.onChange(function (value) {
+      sepiad = !sepiad;
+    });
 
-  sepia.onChange(function (value) {
-    sepiad = !sepiad;
-  });
+    highshelf.onChange(function (value) {
+      if (controls.Highshelf = true) {
+        controls.NoEffect = false;
+        controls.Lowshelf = false;
+        highShelfed = true;
+      }
+      else {
+        highShelfed = false;
+      }
 
-  highshelf.onChange(function (value) {
-    if (controls.Highshelf = true) {
-      controls.NoEffect = false;
-      controls.Lowshelf = false;
-      highShelfed = true;
-    }
-    else {
-      highShelfed = false;
-    }
+      toggleHighShelf(highshelfBiquadFilter, controls.Highshelf, audioCtx);
+      toggleLowShelf(lowshelfBiquadFilter, controls.Lowshelf, audioCtx);
+
+    });
 
     toggleHighShelf(highshelfBiquadFilter, controls.Highshelf, audioCtx);
-    toggleLowShelf(lowshelfBiquadFilter, controls.Lowshelf, audioCtx);
 
-  });
+    lowshelf.onChange(function (value) {
+      if (controls.Lowshelf = true) {
+        controls.NoEffect = false;
+        controls.Highshelf = false;
+      }
 
-  toggleHighShelf(highshelfBiquadFilter, controls.Highshelf, audioCtx);
-
-  lowshelf.onChange(function (value) {
-    if (controls.Lowshelf = true) {
-      controls.NoEffect = false;
-      controls.Highshelf = false;
-    }
-
-    toggleLowShelf(lowshelfBiquadFilter, controls.Lowshelf, audioCtx);
-    toggleHighShelf(highshelfBiquadFilter, controls.Highshelf, audioCtx);
+      toggleLowShelf(lowshelfBiquadFilter, controls.Lowshelf, audioCtx);
+      toggleHighShelf(highshelfBiquadFilter, controls.Highshelf, audioCtx);
 
 
-  });
-
-  toggleLowShelf(lowshelfBiquadFilter, controls.Lowshelf, audioCtx);
-
-  noEffect.onChange(function (value) {
-    if (controls.NoEffect = true) {
-      controls.Highshelf = false;
-      controls.Lowshelf = false;
-    }
+    });
 
     toggleLowShelf(lowshelfBiquadFilter, controls.Lowshelf, audioCtx);
-    toggleHighShelf(highshelfBiquadFilter, controls.Highshelf, audioCtx);
-  });
 
-  /*controller.onFinishChange(function(value) {
-    // Fires when a controller loses focus.
-    alert("The new value is " + value);
-  });*/
+    noEffect.onChange(function (value) {
+      if (controls.NoEffect = true) {
+        controls.Highshelf = false;
+        controls.Lowshelf = false;
+      }
 
-  //updating automatically (i.e. for progress bar for music)
-  gui.add(controls, 'Duration', 0, 100).listen();
+      toggleLowShelf(lowshelfBiquadFilter, controls.Lowshelf, audioCtx);
+      toggleHighShelf(highshelfBiquadFilter, controls.Highshelf, audioCtx);
+    });
 
-  let update = function () {
-    requestAnimationFrame(update);
-    manipulatePixels(ctx, tinted, inverted, noised, sepiad);
+    /*controller.onFinishChange(function(value) {
+      // Fires when a controller loses focus.
+      alert("The new value is " + value);
+    });*/
+
+    //updating automatically (i.e. for progress bar for music)
+    gui.add(controls, 'Duration', 0, 100).listen();
+
+    let update = function () {
+      requestAnimationFrame(update);
+      manipulatePixels(ctx, tinted, inverted, noised, sepiad);
+    };
+
+    update();
   };
-
-  update();
-};
+}

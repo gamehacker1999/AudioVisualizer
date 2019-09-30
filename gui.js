@@ -109,6 +109,9 @@ function datGUI()
 
     distortionSlider.onChange(function (value) {
         distortionAmount = value;
+        if(distorted){
+          toggleDistortion(distorted, distortionFilter, distortionAmount);
+        }
     });
 
     gainNode.gain.value = controls.Volume / 100;

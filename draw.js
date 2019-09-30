@@ -1,3 +1,5 @@
+import {brightnessAmount} from './gui.js';
+
 export {drawClouds, manipulatePixels};
 
 function drawClouds(x,y,max=0, ctx){
@@ -72,7 +74,10 @@ function manipulatePixels(ctx, tintRed, invert, noise, sepia){
                 data[i+2]=255;
             
         }
-        
+        //brightness
+        data[i] = data[i] * (brightnessAmount/100);
+        data[i+1] = data[i+1] * (brightnessAmount/100);
+        data[i+2] = data[i+2] * (brightnessAmount/100);
     }
     
     ctx.putImageData(imageData,0,0);

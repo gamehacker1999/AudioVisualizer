@@ -2,7 +2,9 @@ import { requestFullscreen, toggleHighShelf, toggleLowShelf } from './input.js';
 import { manipulatePixels } from './draw.js';
 import { audioCtx, highshelfBiquadFilter, lowshelfBiquadFilter, gainNode, audioElement } from './main.js'
 
-export {datGUI};
+export {datGUI, brightnessAmount};
+
+let brightnessAmount = 100;
 
 function datGUI()
 {
@@ -15,11 +17,6 @@ function datGUI()
   let inverted = false;
   let noised = false;
   let sepiad = false;
-
-  //sound effects
-  let highShelfed = false;
-  let lowShelfed = false;
-  let noEffect = true;
 
   //audio variables
   let playing=false;
@@ -52,6 +49,7 @@ function datGUI()
     this.Sepia = false;
     this.Noise = false;
     this.Invert = false;
+    this.Brightness = 100;
     this.Highshelf = false;
     this.Lowshelf = false;
     this.NoEffect = true;
@@ -76,6 +74,7 @@ function datGUI()
     let sepia = f1.add(controls, 'Sepia'); //checkbox    
     let noise = f1.add(controls, 'Noise'); //checkbox 
     let invert = f1.add(controls, 'Invert'); //checkbox
+    let brightnessSlider = f1.add(controls, 'Brightness', 0, 100);
 
     let f2 = gui.addFolder('Effects');
     let highshelf = f2.add(controls, 'Highshelf').listen();
@@ -89,6 +88,11 @@ function datGUI()
     //changes to gui
     volumeSlider.onChange(function (value) {
       gainNode.gain.value = value / 100.0;
+    });
+
+    brightnessSlider.onChange(function (value) {
+      gainNode.gain.value = value / 100.0;
+      brightnessAmount = value;
     });
 
     gainNode.gain.value = controls.Volume / 100;
@@ -119,7 +123,6 @@ function datGUI()
       if (controls.Highshelf = true) {
         controls.NoEffect = false;
         controls.Lowshelf = false;
-        highShelfed = true;
       }
       else {
         highShelfed = false;
@@ -140,8 +143,6 @@ function datGUI()
 
       toggleLowShelf(lowshelfBiquadFilter, controls.Lowshelf, audioCtx);
       toggleHighShelf(highshelfBiquadFilter, controls.Highshelf, audioCtx);
-
-
     });
 
     toggleLowShelf(lowshelfBiquadFilter, controls.Lowshelf, audioCtx);

@@ -23,7 +23,7 @@ function datGUI()
   let playing=false;
   let distorted = false;
 
-  let ControlPanel = function () {
+  let controlPanel = function () {
 
     this.Play = function () {
       //if audio context is suspended then resume it
@@ -61,7 +61,7 @@ function datGUI()
   };
 
   window.onload = function () {
-    let controls = new ControlPanel();
+    let controls = new controlPanel();
     let gui = new dat.GUI();
     let playButton = gui.add(controls, 'Play'); //click
 

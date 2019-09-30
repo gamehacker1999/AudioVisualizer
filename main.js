@@ -1,7 +1,3 @@
-
-//import * as dat from './dat.gui/dat.gui-master/build/dat.gui.js';
-//const gui = new dat.GUI();
-
 import {drawClouds,manipulatePixels} from './draw.js';
 import {requestFullscreen,toggleHighShelf,toggleLowShelf} from './input.js';
 export {init,audioCtx,highshelfBiquadFilter,lowshelfBiquadFilter,gainNode,audioElement,distortionFilter};

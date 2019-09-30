@@ -78,9 +78,19 @@ function datGUI()
     let invert = f1.add(controls, 'Invert'); //checkbox
 
     let f2 = gui.addFolder('Effects');
+
+    //converting the effect checkboxes to radio buttons
     let highshelf = f2.add(controls, 'Highshelf').listen();
+    let highshelfInput = [].slice.call(highshelf.domElement.childNodes);
+    highshelfInput[0].type='radio';
+
     let lowshelf = f2.add(controls, 'Lowshelf').listen();
+    let lowshelfInput = [].slice.call(lowshelf.domElement.childNodes);
+    lowshelfInput[0].type='radio';
+
     let noEffect = f2.add(controls, 'NoEffect').listen();
+    let noEffectInput = [].slice.call(noEffect.domElement.childNodes);
+    noEffectInput[0].type='radio';
 
     let f3 = gui.addFolder('Wave Distortion');
     let distortion = f3.add(controls,'Distortion');

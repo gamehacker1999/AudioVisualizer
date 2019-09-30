@@ -1,6 +1,6 @@
 import { requestFullscreen, toggleHighShelf, toggleLowShelf } from './input.js';
-import { drawClouds, manipulatePixels } from './draw.js';
-import { init, audioCtx, highshelfBiquadFilter, lowshelfBiquadFilter, gainNode, audioElement } from './main.js'
+import { manipulatePixels } from './draw.js';
+import { audioCtx, highshelfBiquadFilter, lowshelfBiquadFilter, gainNode, audioElement } from './main.js'
 
 //getting canvas and ctx
 let canvas = document.querySelector('canvas');
@@ -17,7 +17,7 @@ let highShelfed = false;
 let lowShelfed = false;
 let noEffect = true;
 
-//audio vars
+//audio variables
 let playing=false;
 
 let ControlPanel = function () {

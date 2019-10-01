@@ -1,8 +1,9 @@
 import {init} from './main.js';
 import {datGUI} from './gui.js';
-init();
-datGUI();
+init(); //initializes everything
+datGUI(); //sets up GUI controls
 
+//TODO:
 //one more slider
 //progress indicator
 //gradient

@@ -7,8 +7,8 @@ export {datGUI, brightnessAmount};
 let brightnessAmount = 100;
 let distortionAmount = 0;
 
-function datGUI()
-{
+//wrapper function for all dat gui code
+function datGUI(){
   //getting canvas and ctx
   let canvas = document.querySelector('canvas');
   let ctx = canvas.getContext('2d');
@@ -23,6 +23,7 @@ function datGUI()
   let playing=false;
   let distorted = false;
 
+  //sets up control panel object which will be displayed on screen
   let controlPanel = function () {
 
     this.Play = function () {
@@ -60,6 +61,7 @@ function datGUI()
     this.Duration = 0;
   };
 
+  //initialization when window loads for control panel
   window.onload = function () {
     let controls = new controlPanel();
     let gui = new dat.GUI();
@@ -192,6 +194,8 @@ function datGUI()
     update(playButton);
   };
 
+  //updates gui logic 
+  //e.g. manipulate pixels, play/pause
   let update = function (playButton) {
     //passing playbutton so that this value can be switched
     requestAnimationFrame(function(){
@@ -210,7 +214,5 @@ function datGUI()
     else{
       playButton.domElement.previousSibling.innerHTML='Play';
     }
-
-
   };
 }

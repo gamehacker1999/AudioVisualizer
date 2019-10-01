@@ -1,5 +1,4 @@
-import {drawClouds,manipulatePixels} from './draw.js';
-import {requestFullscreen,toggleHighShelf,toggleLowShelf} from './input.js';
+import {drawClouds} from './draw.js';
 export {init,audioCtx,highshelfBiquadFilter,lowshelfBiquadFilter,gainNode,audioElement,distortionFilter};
 
 //canvas variables
@@ -14,7 +13,6 @@ let audioCtx;
 let sourceNode;
 let analyzerNode;
 let gainNode;
-let destinationNode;
 let audioData;
 let waveform;
 
@@ -23,11 +21,6 @@ let lowshelfBiquadFilter;
 let highshelfBiquadFilter;
 let reverberateFilter;
 let distortionFilter;
-
-//distortion booleans
-let highshelf;
-let lowshelf;
-let noEffect;
 
 let playing = false;
 
@@ -39,22 +32,16 @@ let cloudPos2;
 let cloudPos3;
 let cloudPos4;
 
-let tintRed = false;
-let noise = false;
-let invert = false;
-let sepia = false;
-
-let frameCounter;
-
 let image1;
 let image2;
 
+//initializes all variables
 function init(){
     
     const SOUND_PATH = Object.freeze({
         sound1: "media/New Adventure Theme.mp3",
         sound2: "media/Peanuts Theme.mp3",
-        sound3:  "media/The Picard Song.mp3"
+        sound3: "media/The Picard Song.mp3"
     });
     const NUM_SAMPLES = 128;
     
@@ -136,14 +123,12 @@ function init(){
     lowshelf=false;
     noEffect=true;
     
-    //setting up the UI
-    //setupUI();
-    
     //updating
     update();
     
 }
 
+//updates canvas every frame
 function update(){
     requestAnimationFrame(update);
     
@@ -201,11 +186,9 @@ function update(){
         let x = (canvasCenterX)+(Math.cos(angle*i))*100;
         let y = (canvasCenterY)+(Math.sin(angle*i))*100;
         
-        
         ctx.fillRect(100,0,width,5);
         
         ctx.restore();
-        
     }
     
     ctx.globalAlpha=1.0;
@@ -228,10 +211,8 @@ function update(){
         ctx.fillRect(i*12.5,canvas.height*2/3,13,height+60.5);
         
         ctx.restore();
-        
     }
-      
-
+    
     //updating cloud positions and wrapping them around
     cloudPos1+=1/4;
     if((cloudPos1*0.6)>canvas.width+20)
@@ -263,105 +244,5 @@ function update(){
     ctx.shadowColor = '#8a795d';
     ctx.drawImage(image2,600,530);
 
-    //adding photoshipish effects
-    //manipulatePixels(ctx,tintRed,invert,noise,sepia);
-
     ctx.restore();
 }
-
-/*function setupUI(){
-    //full screen button
-    let fsButton = document.querySelector('#fullScreenButton');
-    fsButton.onclick = e => {
-        requestFullscreen(canvas);
-    };
-    
-    let playButton = document.querySelector('#playButton');
-    playButton.onclick = e =>{
-        
-        //if audio context is suspended then resume it
-        if(audioCtx.state === 'suspended'){
-            audioCtx.resume();
-        }
-        
-        //if the music wasn't playing then play it
-        if(playing===false){
-            playing = true;
-            audioElement.play();
-            e.target.innerHTML = 'Pause';
-        }
-        
-        //else pause it
-        else{
-            playing=false;
-            audioElement.pause();
-            e.target.innerHTML = 'Play';
-        }
-    };
-    
-    //selecting a track
-    let trackSelect = document.querySelector('#songSelect');
-    
-    trackSelect.onchange = e => {
-        //pause the current track if it is playing using dispatch events
-        playButton.dispatchEvent(new MouseEvent("click"));
-        
-        //changing the song
-        audioElement.src = e.target.value;
-        
-    };
-    
-    //setting up the volume slider
-    let volumeSlider = document.querySelector('#volumeSlider');
-    volumeSlider.oninput = e =>{
-        gainNode.gain.value = e.target.value/100;
-        volumeLabel.innerHTML = e.target.value;
-    };
-    volumeSlider.dispatchEvent(new InputEvent('input'));
-    
-    //setting up the checkboxes
-    document.querySelector('#tintCB').checked = tintRed;
-    document.querySelector('#tintCB').onchange = e => tintRed = e.target.checked;
-    
-    document.querySelector('#sepiaCB').checked = sepia;
-    document.querySelector('#sepiaCB').onchange = e => sepia = e.target.checked;
-    
-    document.querySelector('#invertCB').checked = invert;
-    document.querySelector('#invertCB').onchange = e => invert = e.target.checked;
-    
-    document.querySelector('#noiseCB').checked = noise;
-    document.querySelector('#noiseCB').onchange = e => noise=e.target.checked;
-
-    //setting up radio buttons
-    document.querySelector("#baseRadio").checked = lowshelf;
-    document.querySelector("#baseRadio").onchange = e =>{
-        lowshelf = e.target.checked;
-        noEffect=false;
-        highshelf=false;
-        toggleHighShelf(highshelfBiquadFilter,highshelf,audioCtx);
-        toggleLowShelf(lowshelfBiquadFilter,lowshelf,audioCtx);
-    }
-
-    toggleLowShelf(lowshelfBiquadFilter,lowshelf,audioCtx);
-
-    document.querySelector("#trebleRadio").checked=highshelf;
-    document.querySelector("#trebleRadio").onchange = e=>{
-        highshelf=e.target.checked;
-        noEffect = false;
-        lowshelf=false;
-        toggleHighShelf(highshelfBiquadFilter,highshelf,audioCtx);
-        toggleLowShelf(lowshelfBiquadFilter,lowshelf,audioCtx);
-    }
-
-    toggleHighShelf(highshelfBiquadFilter,highshelf,audioCtx);
-    
-    document.querySelector("#noEffectRadio").checked = noEffect;
-    document.querySelector("#noEffectRadio").onchange = e=>{
-        lowshelf=false;
-        highshelf=false;
-        toggleHighShelf(highshelfBiquadFilter,highshelf,audioCtx);
-        toggleLowShelf(lowshelfBiquadFilter,lowshelf,audioCtx);
-        noEffect=!noEffect;
-    }
-    
-}*/

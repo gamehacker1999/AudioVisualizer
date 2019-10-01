@@ -1,7 +1,7 @@
 import {brightnessAmount} from './gui.js';
-
 export {drawClouds, manipulatePixels};
 
+//draws the clouds at the top of canvas using bezier curves
 function drawClouds(x,y,max=0, ctx){
     ctx.save();
 
@@ -30,6 +30,8 @@ function drawClouds(x,y,max=0, ctx){
     
 }
 
+//changes the look of the canvas using bitmap manipulation
+//e.g. invert, noise, brightness, etc.
 function manipulatePixels(ctx, tintRed, invert, noise, sepia){
     let imageData = ctx.getImageData(0,0,ctx.canvas.width,ctx.canvas.height);
     

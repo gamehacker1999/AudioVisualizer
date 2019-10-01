@@ -24,6 +24,8 @@ let distortionFilter;
 
 let playing = false;
 
+let frameCounter;
+
 let sunCenterX;
 let sunCenterY;
 

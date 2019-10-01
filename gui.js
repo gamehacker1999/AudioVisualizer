@@ -106,6 +106,9 @@ function datGUI(){
 
     brightnessSlider.onChange(function (value) {
       brightnessAmount = value;
+      if(brightnessAmount<=5){
+        brightnessAmount = 5;
+      }
     });
 
     distortionSlider.onChange(function (value) {

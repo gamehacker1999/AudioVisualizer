@@ -26,6 +26,10 @@ let playing = false;
 
 let frameCounter;
 
+let highshelf;
+let lowshelf;
+let noEffect;
+
 let sunCenterX;
 let sunCenterY;
 

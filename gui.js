@@ -105,7 +105,6 @@ function datGUI(){
     });
 
     brightnessSlider.onChange(function (value) {
-      gainNode.gain.value = value / 100.0;
       brightnessAmount = value;
     });
 

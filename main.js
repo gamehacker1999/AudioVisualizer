@@ -142,8 +142,10 @@ function update(){
     
     ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
     let grad = ctx.createLinearGradient(0,0,0,ctx.canvas.height);
-    grad.addColorStop(0,'#fb7ba2');
-    grad.addColorStop(1, '#fce043');
+    grad.addColorStop(0,'navy'); //#fb7ba2
+    grad.addColorStop(0.1,'blue'); //#fb7ba2
+    grad.addColorStop(0.4,'orange'); //#fb7ba2
+    grad.addColorStop(1, 'red'); //#fce043
     ctx.fillStyle = grad;    
     
     ctx.fillRect(0,0,canvas.width,canvas.height);

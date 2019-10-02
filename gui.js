@@ -2,10 +2,11 @@ import { requestFullscreen, toggleHighShelf, toggleLowShelf, toggleDistortion } 
 import { manipulatePixels } from './draw.js';
 import { audioCtx, highshelfBiquadFilter, lowshelfBiquadFilter, gainNode, audioElement, distortionFilter } from './main.js'
 
-export {datGUI, brightnessAmount};
+export {datGUI, brightnessAmount, nightTime};
 
 let brightnessAmount = 100;
 let distortionAmount = 0;
+let nightTime = false; //night or day mode 
 
 //wrapper function for all dat gui code
 function datGUI(){
@@ -48,6 +49,7 @@ function datGUI(){
     this.Volume = 50;
     this.Song = "Peanuts Theme";
     this.FullScreen = e => { requestFullscreen(canvas) };
+    this.Night = false;
     this.Tint = false;
     this.Sepia = false;
     this.Noise = false;
@@ -72,6 +74,10 @@ function datGUI(){
     gui.add(controls, 'FullScreen'); //click
     let trackSelect = gui.add(controls, 'Song', ["New Adventure Theme", "Peanuts Theme",
     "The Picard Song"]); //drop down
+
+    let fModes = gui.addFolder('Modes'); //folder - then just use f1.add(...); and f1.open();
+    let night = fModes.add(controls, 'Night');
+    fModes.open(); //delete later
 
     let f1 = gui.addFolder('Display'); //folder - then just use f1.add(...); and f1.open();
     let tint = f1.add(controls, 'Tint'); //checkbox
@@ -124,6 +130,10 @@ function datGUI(){
       audioElement.src='media/'+value+'.mp3'; 
       playing=true;
       controls.Play(playButton);      
+    });
+
+    night.onChange(function(value){
+      nightTime = !nightTime;
     });
 
     tint.onChange(function (value) {
@@ -184,11 +194,6 @@ function datGUI(){
       toggleLowShelf(lowshelfBiquadFilter, controls.Lowshelf, audioCtx);
       toggleHighShelf(highshelfBiquadFilter, controls.Highshelf, audioCtx);
     });
-
-    /*controller.onFinishChange(function(value) {
-      // Fires when a controller loses focus.
-      alert("The new value is " + value);
-    });*/
 
     //updating automatically (i.e. for progress bar for music)
     gui.add(controls, 'Duration', 0, 100).listen();

@@ -1,4 +1,5 @@
 import {drawClouds} from './draw.js';
+import {nightTime} from './gui.js';
 export {init,audioCtx,highshelfBiquadFilter,lowshelfBiquadFilter,gainNode,audioElement,distortionFilter};
 
 //canvas variables
@@ -139,15 +140,23 @@ function update(){
     requestAnimationFrame(update);
     
     frameCounter++;
-    
+        
     ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
     let grad = ctx.createLinearGradient(0,0,0,ctx.canvas.height);
-    grad.addColorStop(0,'navy'); //#fb7ba2
-    grad.addColorStop(0.1,'blue'); //#fb7ba2
-    grad.addColorStop(0.4,'orange'); //#fb7ba2
-    grad.addColorStop(1, 'red'); //#fce043
-    ctx.fillStyle = grad;    
     
+    if(nightTime){
+        //creates night time sky
+        //grad.addColorStop(0, 'navy');
+        grad.addColorStop(0.3, 'black');
+    }
+    else{
+        //creates sunset gradient
+        grad.addColorStop(0,'navy'); //#fb7ba2
+        grad.addColorStop(0.1,'blue'); //#fb7ba2
+        grad.addColorStop(0.4,'orange'); //#fb7ba2
+        grad.addColorStop(1, 'red'); //#fce043
+    }
+    ctx.fillStyle = grad;    
     ctx.fillRect(0,0,canvas.width,canvas.height);
     
     analyzerNode.getByteFrequencyData(audioData);

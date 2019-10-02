@@ -132,7 +132,6 @@ function init(){
     
     //updating
     update();
-    
 }
 
 //updates canvas every frame
@@ -144,10 +143,43 @@ function update(){
     ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
     let grad = ctx.createLinearGradient(0,0,0,ctx.canvas.height);
     
+    analyzerNode.getByteFrequencyData(audioData);
+    analyzerNode.getByteTimeDomainData(waveform);
+
+    let rects = 50;
+    let angle = Math.PI*2/rects;
+    let max = 0;
+
+    //saving the current canvas state
+    ctx.save();
+
     if(nightTime){
         //creates night time sky
         //grad.addColorStop(0, 'navy');
         grad.addColorStop(0.3, 'black');
+
+        ctx.fillStyle = grad;
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+
+        ctx.save();
+
+        ctx.fillStyle = '#ffff66';
+        
+        //draw moon
+        ctx.beginPath();
+        ctx.arc(90,100,40,0,Math.PI*2);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = 'black';
+
+        //drawing the circle
+        ctx.beginPath();
+        ctx.arc(115,100,40,0,Math.PI*2);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.restore();
     }
     else{
         //creates sunset gradient
@@ -155,78 +187,66 @@ function update(){
         grad.addColorStop(0.1,'blue'); //#fb7ba2
         grad.addColorStop(0.4,'orange'); //#fb7ba2
         grad.addColorStop(1, 'red'); //#fce043
-    }
-    ctx.fillStyle = grad;    
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-    
-    analyzerNode.getByteFrequencyData(audioData);
-    
-    analyzerNode.getByteTimeDomainData(waveform);
-    
-    //sunCenterX+=0.5;
-    //sunCenterY+=0.5;
-    
-    if(sunCenterY>canvas.height+80){
-        sunCenterX=-50;
-        sunCenterY=-50;
-    }
-    
-    //saving the current canvas state
-    ctx.save();
-    grad.addColorStop(0,'#fc354c');
-    grad.addColorStop(1, '#0fbabc');
-    
-    ctx.fillStyle = 'yellow';
-    ctx.strokeStyle = 'white';
-    ctx.lineWidth = 5;
-    
-    //drawing the circle
-    ctx.beginPath();
-    ctx.arc(sunCenterX,sunCenterY,100,0,Math.PI*2);
-    ctx.closePath();
-    //ctx.stroke();
-    ctx.fill();
-    
-    let rects = 50;
-    let angle = Math.PI*2/rects;
-    
-    let max = 0;
-    for(let i=0;i<50;i++){
+
+        ctx.fillStyle = grad;
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+
+        //sunCenterX+=0.5;
+        //sunCenterY+=0.5;
         
-        ctx.save();
-        ctx.translate(sunCenterX,sunCenterY);
-        ctx.rotate(angle*i+15);
-        let width = audioData[i]*0.5;
+        if(sunCenterY>canvas.height+80){
+            sunCenterX=-50;
+            sunCenterY=-50;
+        }
         
-        if(waveform[i]>max) max = waveform[i]*0.5;
+        grad.addColorStop(0,'#fc354c');
+        grad.addColorStop(1, '#0fbabc');
         
-        let x = (canvasCenterX)+(Math.cos(angle*i))*100;
-        let y = (canvasCenterY)+(Math.sin(angle*i))*100;
+        ctx.fillStyle = 'yellow';
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 5;
         
-        ctx.fillRect(100,0,width,5);
-        
-        ctx.restore();
+        //drawing the circle
+        ctx.beginPath();
+        ctx.arc(sunCenterX,sunCenterY,100,0,Math.PI*2);
+        ctx.closePath();
+        //ctx.stroke();
+        ctx.fill();
+
+        //sun rays
+        for(let i=0;i<50;i++){
+            ctx.save();
+            ctx.translate(sunCenterX,sunCenterY);
+            ctx.rotate(angle*i+15);
+            let width = audioData[i]*0.5;
+            
+            if(waveform[i]>max) 
+                max = waveform[i]*0.5;
+            
+            let x = (canvasCenterX)+(Math.cos(angle*i))*100;
+            let y = (canvasCenterY)+(Math.sin(angle*i))*100;
+            
+            ctx.fillRect(100,0,width,5);
+            ctx.restore();
+        }
     }
     
+    //sand
     ctx.globalAlpha=1.0;
     ctx.fillStyle = '#fdd8b5';
     ctx.fillRect(0,canvas.height/1.3,canvas.width,canvas.height);
     
-    ctx.globalAlpha = 1.0;
-    
-        for(let i=0;i<80;i++){
-        
+    //waves
+    for(let i=0;i<80;i++){
         ctx.save();
 
         let height = audioData[i]*0.3;
-        
         let x = (canvasCenterX)+(Math.cos(angle*i))*100;
         let y = (canvasCenterY)+(Math.sin(angle*i))*100;
         
         ctx.fillStyle='blue';
         ctx.strokeStyle = 'blue';
         ctx.fillRect(i*12.5,canvas.height*2/3,13,height+60.5);
-        
         ctx.restore();
     }
     
@@ -254,12 +274,12 @@ function update(){
     drawClouds(cloudPos4,250,max,ctx);
 
     //adding images
-    ctx.drawImage(image1,300,380);
+    ctx.drawImage(image1,300,380); //chair and umbrella
 
     ctx.shadowOffsetX = 1;
     ctx.shadowOffsetY=8;
     ctx.shadowColor = '#8a795d';
-    ctx.drawImage(image2,600,530);
+    ctx.drawImage(image2,600,530); //beach ball with shadow
 
     ctx.restore();
 }

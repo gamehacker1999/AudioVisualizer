@@ -84,7 +84,7 @@ function datGUI(){
     let sepia = f1.add(controls, 'Sepia'); //checkbox    
     let noise = f1.add(controls, 'Noise'); //checkbox 
     let invert = f1.add(controls, 'Invert'); //checkbox
-    let brightnessSlider = f1.add(controls, 'Brightness', 0, 100);
+    let brightnessSlider = f1.add(controls, 'Brightness', 30, 100);
 
     let f2 = gui.addFolder('Effects');
 
@@ -112,8 +112,8 @@ function datGUI(){
 
     brightnessSlider.onChange(function (value) {
       brightnessAmount = value;
-      if(brightnessAmount<=5){
-        brightnessAmount = 5;
+      if(brightnessAmount<30){
+        brightnessAmount = 30;
       }
     });
 

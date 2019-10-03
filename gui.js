@@ -19,6 +19,7 @@ function datGUI(){
   let inverted = false;
   let noised = false;
   let sepiad = false;
+  let greyScaled=false;
 
   //audio variables
   let playing=false;
@@ -54,6 +55,7 @@ function datGUI(){
     this.Sepia = false;
     this.Noise = false;
     this.Invert = false;
+    this.GreyScale = false;
     this.Brightness = 100;
     this.Highshelf = false;
     this.Lowshelf = false;
@@ -84,6 +86,7 @@ function datGUI(){
     let sepia = f1.add(controls, 'Sepia'); //checkbox    
     let noise = f1.add(controls, 'Noise'); //checkbox 
     let invert = f1.add(controls, 'Invert'); //checkbox
+    let greyScale = f1.add(controls, 'GreyScale'); //checkbox
     let brightnessSlider = f1.add(controls, 'Brightness', 30, 100);
 
     let f2 = gui.addFolder('Effects');
@@ -152,6 +155,10 @@ function datGUI(){
       sepiad = !sepiad;
     });
 
+    greyScale.onChange(function(value){
+      greyScaled=!greyScaled;
+    });
+
     distortion.onChange(function(value){
       distorted = !distorted;
       toggleDistortion(distorted, distortionFilter, distortionAmount);
@@ -210,7 +217,7 @@ function datGUI(){
     });
 
     //changing pixel values
-    manipulatePixels(ctx, tinted, inverted, noised, sepiad);
+    manipulatePixels(ctx, tinted, inverted, noised, sepiad,greyScaled);
 
     //if song is playing then play button should say pause
     //else it should say play

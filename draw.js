@@ -32,7 +32,7 @@ function drawClouds(x,y,max=0, ctx){
 
 //changes the look of the canvas using bitmap manipulation
 //e.g. invert, noise, brightness, etc.
-function manipulatePixels(ctx, tintRed, invert, noise, sepia){
+function manipulatePixels(ctx, tintRed, invert, noise, sepia,greyScale,normal){
     let imageData = ctx.getImageData(0,0,ctx.canvas.width,ctx.canvas.height);
     
     let data = imageData.data;
@@ -76,6 +76,12 @@ function manipulatePixels(ctx, tintRed, invert, noise, sepia){
                 data[i+2]=255;
             
         }
+
+        if(greyScale){
+            let v = (data[i]+data[i+1]+data[i+2])/3;
+            data[i]=data[i+1]=data[i+2] = v;
+        }
+
         //brightness
         data[i] = data[i] * (brightnessAmount/100);
         data[i+1] = data[i+1] * (brightnessAmount/100);

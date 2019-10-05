@@ -4,11 +4,16 @@
 
 body {
     background-color: green;
+    background-image: url('/images/beachbackground2.jpg');
 }
 
 h1 {
     font-size: 4em;
     margin: 10px;
+}
+
+canvas {
+    margin-left: 20%;
 }
 
 footer {

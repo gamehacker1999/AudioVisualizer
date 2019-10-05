@@ -163,7 +163,7 @@ function update(){
 
         ctx.save();
 
-        ctx.fillStyle = '#ffff66';
+        ctx.fillStyle = '#ffff66'; //light yellow color
         
         //draw moon
         ctx.beginPath();
@@ -179,6 +179,12 @@ function update(){
         ctx.closePath();
         ctx.fill();
 
+        //cloud shadows
+        for(let i = 0; i<50; i++){
+            if(waveform[i]>max) 
+                max = waveform[i]*0.5;
+        }
+
         ctx.restore();
     }
     else{
@@ -191,6 +197,7 @@ function update(){
         ctx.fillStyle = grad;
         ctx.fillRect(0,0,canvas.width,canvas.height);
 
+        //sun movement
         //sunCenterX+=0.5;
         //sunCenterY+=0.5;
         
@@ -210,16 +217,16 @@ function update(){
         ctx.beginPath();
         ctx.arc(sunCenterX,sunCenterY,100,0,Math.PI*2);
         ctx.closePath();
-        //ctx.stroke();
         ctx.fill();
 
-        //sun rays
+        //sun rays and cloud shadows
         for(let i=0;i<50;i++){
             ctx.save();
             ctx.translate(sunCenterX,sunCenterY);
             ctx.rotate(angle*i+15);
             let width = audioData[i]*0.5;
             
+            //cloud shadows
             if(waveform[i]>max) 
                 max = waveform[i]*0.5;
             

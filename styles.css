@@ -1,3 +1,24 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: green;
+}
+
+h1 {
+    font-size: 4em;
+    margin: 10px;
+}
+
+footer {
+    margin: 10px;
+}
+
+.center {
+    text-align: center;
+}
+
 #chair1 {
     display: none;
 }

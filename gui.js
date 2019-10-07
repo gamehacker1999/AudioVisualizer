@@ -50,8 +50,8 @@ function datGUI(){
       }
     };
 
-    this.Volume = 50;
     this.Song = "Peanuts Theme";
+    this.Volume = 50;
     this.FullScreen = e => { requestFullscreen(canvas) };
     this.Night = false;
     this.Tint = false;
@@ -65,7 +65,6 @@ function datGUI(){
     this.NoEffect = true;
     this.Distortion = false;
     this.DistortionValue = 0;
-    this.Duration = 0;
   };
 
   //initialization when window loads for control panel
@@ -74,15 +73,19 @@ function datGUI(){
     let gui = new dat.GUI({autoPlace: false});
     let guiContainer = document.querySelector("#guiContainer");
     guiContainer.appendChild(gui.domElement);
-    let playButton = gui.add(controls, 'Play'); //click
+
+    let playButton = document.querySelector("#playButton");
+    playButton.onclick = e =>{
+      controls.Play();
+      e.target.src = "images/pauseButton.png";
+    };
 
     progressBar = document.querySelector("#progressBar");
-
-    let volumeSlider = gui.add(controls, 'Volume', 0, 100); //slider from -5 to 5
 
     gui.add(controls, 'FullScreen'); //click
     let trackSelect = gui.add(controls, 'Song', ["New Adventure Theme", "Peanuts Theme",
     "The Picard Song"]); //drop down
+    let volumeSlider = gui.add(controls, 'Volume', 0, 100); //slider from -5 to 5
 
     progressBar.style.animationDuration = audioElement.duration;
 
@@ -115,6 +118,13 @@ function datGUI(){
     let f3 = gui.addFolder('Wave Distortion');
     let distortion = f3.add(controls,'Distortion');
     let distortionSlider = f3.add(controls,'DistortionValue', 0, 100);
+
+    let progressBar2 = document.querySelector("#progressBar2");
+
+    document.querySelector("#progressBar2").onclick = (e)=>{
+      let percent = e.offsetX/e.target.offsetWidth;
+      audioElement.currentTime = percent*audioElement.duration;
+    };
 
     //changes to gui
     volumeSlider.onChange(function (value) {
@@ -211,9 +221,6 @@ function datGUI(){
       toggleHighShelf(highshelfBiquadFilter, controls.Highshelf, audioCtx);
     });
 
-    //updating automatically (i.e. for progress bar for music)
-    gui.add(controls, 'Duration', 0, 100).listen();
-
     update(playButton,progressBar);
   };
 
@@ -231,16 +238,38 @@ function datGUI(){
     //if song is playing then play button should say pause
     //else it should say play
     if(playing){
-      playButton.domElement.previousSibling.innerHTML='Pause';
+      playButton.src="images/pauseButton.png";
     }
 
     else{
-      playButton.domElement.previousSibling.innerHTML='Play';
+      playButton.src="images/playButton.png";
     }
 
     let ratio = audioElement.currentTime/audioElement.duration;
 
+    let currentTime = audioElement.currentTime;
+    let duration = audioElement.duration;
+
+    let currentTimeMin = Math.trunc(currentTime/60);
+    let currentTimeSec = Math.trunc(currentTime%60);
+
+    let durationMin = Math.trunc(duration/60);
+    let durationSec = Math.trunc(duration%60);
+
+    if(isNaN(durationSec)){
+      durationSec=0;
+    }
+
+    if(isNaN(durationMin)){
+      durationMin=0;
+    }
+
+    document.querySelector("#durationTime").innerHTML =  currentTimeMin+":"+(currentTimeSec>9?"":"0")+currentTimeSec+"/"+
+      durationMin+":"+(durationSec>9?"":"0")+durationSec;
+
     let curWidth = maxProgressWidth*ratio;
     progressBar.style.width = curWidth+"px";
+    let remaining = 500-curWidth;
+    //document.querySelector("#progressBar2").style.width = remaining+"px";
   };
 }

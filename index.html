@@ -5,7 +5,7 @@
     <title>Audio Visualizer</title>
     <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css"
         integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css" type="text/css">
     <!--css file-->
     <script src="dat.gui/dat.gui-master/build/dat.gui.min.js"></script>
@@ -19,14 +19,19 @@
             <canvas width="800" height="600"></canvas>
             <div id="guiContainer"></div>
         </div>
-        <div id="progressBar"></div>
-        <!--<audio controls></audio> with progress bar-->
-        <audio></audio>
-        <!--without progress bar-->
-        <img alt="Chair" src="images/chair2.png" id="chair1">
-        <img alt="Beach ball" src="images/beachBall.png" id="ball">
-        <footer class="center">Copyright &copy; 2019 - Ingrida Ivaska and Shubham Sachdeva</footer>
+        <div id="audioControls">
+            <img src="images/playButton.png" alt="playButton" id="playButton">
+            <div id="progressBar2"><div id="progressBar"></div></div>
+            <p id="durationTime"></p>
+        </div>
     </div>
+    <!--<audio controls></audio> with progress bar-->
+    <audio></audio>
+    <!--without progress bar-->
+    <img alt="Chair" src="images/chair2.png" id="chair1">
+    <img alt="Beach ball" src="images/beachBall.png" id="ball">
+    <!--<footer class="center">Copyright &copy; 2019 - Ingrida Ivaska and Shubham Sachdeva</footer>-->
+
 </body>
 <script src="loader.js" type="module"></script>
 

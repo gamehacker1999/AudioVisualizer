@@ -7,6 +7,9 @@ export {datGUI, brightnessAmount, nightTime};
 let brightnessAmount = 100;
 let distortionAmount = 0;
 let nightTime = false; //night or day mode 
+let maxProgressWidth = 500; //this is max width of progress bar
+let duration; //duration of the current song
+let progressBar; //progress bar
 
 //wrapper function for all dat gui code
 function datGUI(){
@@ -68,14 +71,20 @@ function datGUI(){
   //initialization when window loads for control panel
   window.onload = function () {
     let controls = new controlPanel();
-    let gui = new dat.GUI();
+    let gui = new dat.GUI({autoPlace: false});
+    let guiContainer = document.querySelector("#guiContainer");
+    guiContainer.appendChild(gui.domElement);
     let playButton = gui.add(controls, 'Play'); //click
+
+    progressBar = document.querySelector("#progressBar");
 
     let volumeSlider = gui.add(controls, 'Volume', 0, 100); //slider from -5 to 5
 
     gui.add(controls, 'FullScreen'); //click
     let trackSelect = gui.add(controls, 'Song', ["New Adventure Theme", "Peanuts Theme",
     "The Picard Song"]); //drop down
+
+    progressBar.style.animationDuration = audioElement.duration;
 
     let fModes = gui.addFolder('Modes'); //folder - then just use f1.add(...); and f1.open();
     let night = fModes.add(controls, 'Night');
@@ -131,7 +140,8 @@ function datGUI(){
     trackSelect.onChange(function(value){
       audioElement.src='media/'+value+'.mp3'; 
       playing=true;
-      controls.Play(playButton);      
+      controls.Play(playButton);   
+      duration = audioElement.duration;   
     });
 
     night.onChange(function(value){
@@ -204,15 +214,15 @@ function datGUI(){
     //updating automatically (i.e. for progress bar for music)
     gui.add(controls, 'Duration', 0, 100).listen();
 
-    update(playButton);
+    update(playButton,progressBar);
   };
 
   //updates gui logic 
   //e.g. manipulate pixels, play/pause
-  let update = function (playButton) {
+  let update = function (playButton,progressBar) {
     //passing playbutton so that this value can be switched
     requestAnimationFrame(function(){
-      update(playButton);
+      update(playButton,progressBar);
     });
 
     //changing pixel values
@@ -227,5 +237,10 @@ function datGUI(){
     else{
       playButton.domElement.previousSibling.innerHTML='Play';
     }
+
+    let ratio = audioElement.currentTime/audioElement.duration;
+
+    let curWidth = maxProgressWidth*ratio;
+    progressBar.style.width = curWidth+"px";
   };
 }

@@ -17,6 +17,7 @@ datGUI(); //sets up GUI controls
 //reverberate
 //title, website look - background image
 //change songs
+//background tiling
 
 //BEFORE SUBMITTING:
 //comments for every function

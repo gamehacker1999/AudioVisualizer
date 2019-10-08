@@ -135,6 +135,15 @@ footer {
     }
 } 
 
+@media screen and (max-width: 2560px){
+
+    #audioControls{
+        margin-left: 37%;
+        margin-top: 2%;
+        height: 3em;
+    }
+} 
+
 @media screen and (max-width: 2304px){
 
     #audioControls{

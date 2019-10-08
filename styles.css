@@ -3,8 +3,7 @@
 }
 
 body {
-    /*background-color: green;*/
-    background-image: url('/images/beachbackground2.jpg');
+    background-image: url('images/beachbackground2.jpg');
     background-size: cover;
 }
 

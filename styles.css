@@ -2,11 +2,6 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
-body {
-    /*background-color: green;*/
-    /*background-image: url('/images/beachbackground2.jpg');*/
-}
-
 #flexBox{
     display: flex;
     flex-direction: row;    

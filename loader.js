@@ -5,7 +5,6 @@ datGUI(); //sets up GUI controls
 
 //TODO:
 //one more slider
-//progress indicator
 //embedded web font
 //css framework or modern web technology
 //es6 module pattern
@@ -16,7 +15,7 @@ datGUI(); //sets up GUI controls
 //documentation
 //media queries - range of displays - 1024x768
 //reverberate
-//title, website look
+//title, website look - background image
 
 //BEFORE SUBMITTING:
 //comments for every function

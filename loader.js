@@ -24,3 +24,6 @@ datGUI(); //sets up GUI controls
 //console log calls
 //post to banjo
 //css and html validation
+
+//documentation:
+//beach background: https://wallpaperaccess.com/4k-ultra-hd-beach

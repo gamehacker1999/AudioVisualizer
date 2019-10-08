@@ -16,6 +16,7 @@ datGUI(); //sets up GUI controls
 //media queries - range of displays - 1024x768
 //reverberate
 //title, website look - background image
+//change songs
 
 //BEFORE SUBMITTING:
 //comments for every function

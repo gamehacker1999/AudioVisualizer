@@ -84,7 +84,7 @@ function datGUI(){
 
     gui.add(controls, 'FullScreen'); //click
     let trackSelect = gui.add(controls, 'Song', ["New Adventure Theme", "Peanuts Theme",
-    "The Picard Song"]); //drop down
+    "The Picard Song","Beneath The Mask"]); //drop down
     let volumeSlider = gui.add(controls, 'Volume', 0, 100); //slider from -5 to 5
 
     progressBar.style.animationDuration = audioElement.duration;

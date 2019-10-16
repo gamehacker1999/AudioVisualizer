@@ -207,12 +207,12 @@ function update(){
 
         ctx.fillStyle = '#ffff66'; //light yellow color
         
-        //draw moon
-        let moonX = 120;
-        let moonY = 100;
-        let moonRadius = 70;
+        //draw day time sun
+        let daySunX = 120;
+        let daySunY = 100;
+        let daySunRadius = 70;
         ctx.beginPath();
-        ctx.arc(moonX,moonY,moonRadius,0,Math.PI*2);
+        ctx.arc(daySunX,daySunY, daySunRadius,0,Math.PI*2);
         ctx.closePath();
         ctx.fill();
 
@@ -226,7 +226,7 @@ function update(){
 
         for(let i = 0; i<50; i++){
             ctx.save();
-            ctx.translate(moonX,moonY);
+            ctx.translate(daySunX,daySunY);
             ctx.rotate(angle*i+15);
             let width = audioData[i]*0.5;
 
@@ -235,7 +235,7 @@ function update(){
                 max = waveform[i]*0.5;
             }
 
-            ctx.fillRect(moonRadius-20,0,width,5);
+            ctx.fillRect(daySunRadius-20,0,width,5);
             ctx.restore();
         }
         ctx.restore();

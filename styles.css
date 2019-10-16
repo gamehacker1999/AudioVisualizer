@@ -44,7 +44,6 @@ h1 {
     background-image: -webkit-linear-gradient(left, red, orange, blue, navy);
     color:transparent;
     -webkit-background-clip: text;
-    background-clip: text;
 }
 
 canvas {
@@ -116,7 +115,7 @@ footer {
 #audioControls{
     display: flex;
     flex-direction: row;
-    background-color: rgba(256, 255, 0, 0.6);
+    background-color: rgba(255, 255, 0, 0.6);
     border-radius: 40px;
     width: 700px;
     margin-bottom: 10px;

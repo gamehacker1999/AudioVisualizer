@@ -126,7 +126,7 @@ function datGUI(){
     let grayScale = f1.add(controls, 'GrayScale'); //checkbox
     let brightnessSlider = f1.add(controls, 'Brightness', 30, 100);
 
-    let f2 = gui.addFolder('Effects');
+    let f2 = gui.addFolder('Audio Effects');
     f2.domElement.style.fontSize = "10pt";
     //converting the effect checkboxes to radio buttons
     let highshelf = f2.add(controls, 'Highshelf').listen();

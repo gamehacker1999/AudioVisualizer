@@ -1,6 +1,6 @@
 import {drawClouds} from './draw.js';
-import {nightTime} from './gui.js';
-export {init,audioCtx,highshelfBiquadFilter,lowshelfBiquadFilter,gainNode,audioElement,distortionFilter};
+import {nightTime,cloudSpeed} from './gui.js';
+export {init,audioCtx,highshelfBiquadFilter,lowshelfBiquadFilter,gainNode,audioElement,distortionFilter,convolver,convolverGain};
 
 //canvas variables
 let canvas;
@@ -22,6 +22,10 @@ let lowshelfBiquadFilter;
 let highshelfBiquadFilter;
 let reverberateFilter;
 let distortionFilter;
+
+//convolver
+let convolver;
+let convolverGain;
 
 let playing = false;
 
@@ -48,7 +52,9 @@ function init(){
     const SOUND_PATH = Object.freeze({
         sound1: "media/New Adventure Theme.mp3",
         sound2: "media/Peanuts Theme.mp3",
-        sound3: "media/The Picard Song.mp3"
+        sound3: "media/The Picard Song.mp3",
+        sound4: "media/Beneath The Mask.mp3"
+
     });
     const NUM_SAMPLES = 128;
     
@@ -73,13 +79,12 @@ function init(){
     sunCenterX = canvas.width/2;
     sunCenterY = 400;
     
-    audioElement = document.querySelector('audio');
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     audioCtx = new AudioContext();
     
     // getting a reference to the <audio> element on the page
     audioElement = document.querySelector("audio");
-    audioElement.src = SOUND_PATH.sound2;
+    audioElement.src = SOUND_PATH.sound4;
     
     // create an a source node that points at the <audio> element
     sourceNode = audioCtx.createMediaElementSource(audioElement);
@@ -99,6 +104,29 @@ function init(){
     // creating a gain (volume) node
     gainNode = audioCtx.createGain();
     gainNode.gain.value = 1;
+
+    //creating convolver variables
+    convolverGain = audioCtx.createGain();
+    convolverGain.gain.value = 0;
+    sourceNode.connect(convolverGain);
+    convolver = audioCtx.createConvolver();
+
+    let echoURL = "media/echo.wav";
+
+    let impulseResponse = new XMLHttpRequest();
+    impulseResponse.open("GET",echoURL,true);
+    impulseResponse.responseType = "arraybuffer";
+
+    impulseResponse.onload = function(){
+        audioCtx.decodeAudioData(impulseResponse.response,function(buffer){
+            convolver.buffer=buffer;
+            convolverGain.gain.value = 0;
+            convolverGain.connect(convolver);
+            convolver.connect(gainNode);
+        });
+    }
+
+    impulseResponse.send();
 
     //creating biquad filters
     highshelfBiquadFilter = audioCtx.createBiquadFilter();
@@ -244,33 +272,41 @@ function update(){
     ctx.fillRect(0,canvas.height/1.3,canvas.width,canvas.height);
     
     //waves
+    
+    ctx.beginPath();
+    ctx.moveTo(0,canvas.height*2/3);
     for(let i=0;i<80;i++){
-        ctx.save();
+        
+        //ctx.save();
 
         let height = audioData[i]*0.3;
-        let x = (canvasCenterX)+(Math.cos(angle*i))*100;
-        let y = (canvasCenterY)+(Math.sin(angle*i))*100;
         
+        ctx.lineTo(i*13,canvas.height*2/3+(height+60.5));
         ctx.fillStyle='blue';
         ctx.strokeStyle = 'blue';
-        ctx.fillRect(i*12.5,canvas.height*2/3,13,height+60.5);
-        ctx.restore();
+        //ctx.fillRect(i*12.5,canvas.height*2/3,13,height+60.5);
+        //ctx.restore();
     }
+    ctx.lineTo(canvas.width,canvas.height*2/3);
+    ctx.fillStyle='blue';
+    ctx.strokeStyle = 'blue';
+    ctx.closePath();
+    ctx.fill();
     
     //updating cloud positions and wrapping them around
-    cloudPos1+=1/4;
+    cloudPos1+=1/4*(cloudSpeed);
     if((cloudPos1*0.6)>canvas.width+20)
         cloudPos1=-245;
 
-    cloudPos2+=1/4;
+    cloudPos2+=1/4*(cloudSpeed);
     if((cloudPos2*0.6)>canvas.width+20)
         cloudPos2=-245;
 
-    cloudPos3+=1/4;
+    cloudPos3+=1/4*(cloudSpeed);
     if((cloudPos3*0.6)>canvas.width+20)
         cloudPos3=-245;
 
-    cloudPos4+=1/4;
+    cloudPos4+=1/4*(cloudSpeed);
     if((cloudPos4*0.6)>canvas.width+20)
         cloudPos4=-245;
     
@@ -289,4 +325,12 @@ function update(){
     ctx.drawImage(image2,600,530); //beach ball with shadow
 
     ctx.restore();
+}
+
+function updateWaves()
+{
+    setInterval(update,3000);
+
+    analyzerNode.getByteTimeDomainData(waveform);
+
 }

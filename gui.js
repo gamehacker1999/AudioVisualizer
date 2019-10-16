@@ -1,8 +1,9 @@
 import { requestFullscreen, toggleHighShelf, toggleLowShelf, toggleDistortion } from './input.js';
 import { manipulatePixels } from './draw.js';
-import { audioCtx, highshelfBiquadFilter, lowshelfBiquadFilter, gainNode, audioElement, distortionFilter } from './main.js'
+import { audioCtx, highshelfBiquadFilter, lowshelfBiquadFilter, gainNode, audioElement,
+   distortionFilter,convolver,convolverGain } from './main.js'
 
-export {datGUI, brightnessAmount, nightTime};
+export {datGUI, nightTime,cloudSpeed};
 
 let brightnessAmount = 100;
 let distortionAmount = 0;
@@ -10,6 +11,7 @@ let nightTime = false; //night or day mode
 let maxProgressWidth = 500; //this is max width of progress bar
 let duration; //duration of the current song
 let progressBar; //progress bar
+let cloudSpeed=1;; //speed of the clouds
 
 //wrapper function for all dat gui code
 function datGUI(){
@@ -50,7 +52,7 @@ function datGUI(){
       }
     };
 
-    this.Song = "Peanuts Theme";
+    this.Song = "Beneath The Mask";
     this.Volume = 50;
     this.FullScreen = e => { requestFullscreen(canvas) };
     this.Night = false;
@@ -65,6 +67,9 @@ function datGUI(){
     this.NoEffect = true;
     this.Distortion = false;
     this.DistortionValue = 0;
+    this.Reverb = false;
+    this.ReverbValue = 0;
+    this.CloudSpeed = 10;
   };
 
   //initialization when window loads for control panel
@@ -77,7 +82,6 @@ function datGUI(){
     let playButton = document.querySelector("#playButton");
     playButton.onclick = e =>{
       controls.Play();
-      e.target.src = "images/pauseButton.png";
     };
 
     progressBar = document.querySelector("#progressBar");
@@ -87,7 +91,7 @@ function datGUI(){
     "The Picard Song","Beneath The Mask"]); //drop down
     let volumeSlider = gui.add(controls, 'Volume', 0, 100); //slider from -5 to 5
 
-    progressBar.style.animationDuration = audioElement.duration;
+    let cloudSpeedSlider = gui.add(controls,"CloudSpeed",0,50);
 
     let fModes = gui.addFolder('Modes'); //folder - then just use f1.add(...); and f1.open();
     let night = fModes.add(controls, 'Night');
@@ -115,9 +119,12 @@ function datGUI(){
     let noEffectInput = [].slice.call(noEffect.domElement.childNodes);
     noEffectInput[0].type='radio';
 
+    let reverbSlider = f2.add(controls,'ReverbValue',0,100);
+
     let f3 = gui.addFolder('Wave Distortion');
     let distortion = f3.add(controls,'Distortion');
     let distortionSlider = f3.add(controls,'DistortionValue', 0, 100);
+
 
     let progressBar2 = document.querySelector("#progressBar2");
 
@@ -139,10 +146,20 @@ function datGUI(){
     });
 
     distortionSlider.onChange(function (value) {
-        distortionAmount = value;
-        if(distorted){
-          toggleDistortion(distorted, distortionFilter, distortionAmount);
-        }
+      distortionAmount = value;
+      if(distorted){
+        toggleDistortion(distorted, distortionFilter, distortionAmount);
+      }
+    });
+
+    reverbSlider.onChange(function(value){
+      convolverGain.gain.value = value/70.0;
+    });
+
+    cloudSpeed = controls.CloudSpeed/10.0;
+
+    cloudSpeedSlider.onChange(function(value){
+      cloudSpeed = value/10.0;
     });
 
     gainNode.gain.value = controls.Volume / 100;
@@ -233,7 +250,7 @@ function datGUI(){
     });
 
     //changing pixel values
-    manipulatePixels(ctx, tinted, inverted, noised, sepiad, grayScaled);
+    manipulatePixels(ctx, tinted, inverted, noised, sepiad, grayScaled,brightnessAmount);
 
     //if song is playing then play button should say pause
     //else it should say play
@@ -264,12 +281,16 @@ function datGUI(){
       durationMin=0;
     }
 
+    if(duration===currentTime)
+    {
+      //playButton.dispatchEvent(new MouseEvent("click"));
+    }
+
     document.querySelector("#durationTime").innerHTML =  currentTimeMin+":"+(currentTimeSec>9?"":"0")+currentTimeSec+"/"+
       durationMin+":"+(durationSec>9?"":"0")+durationSec;
 
     let curWidth = maxProgressWidth*ratio;
     progressBar.style.width = curWidth+"px";
     let remaining = 500-curWidth;
-    //document.querySelector("#progressBar2").style.width = remaining+"px";
   };
 }

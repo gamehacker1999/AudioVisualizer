@@ -4,18 +4,11 @@ init(); //initializes everything
 datGUI(); //sets up GUI controls like dat gui and progress slider
 
 //TODO:
-//embedded web font 
 //external source documentation - dat.gui, clouds
-//above and beyond classwork
-//periodic change
 //documentation - flexbox
 //media queries - range of displays - 1024x768
-
-//reverberate
-//title, website look - background image
-//change songs
-//background tiling
-
+//responsive design - controls remain on screen
+//change pause button to play on end of song
 
 //BEFORE SUBMITTING:
 //comments for every function
@@ -24,11 +17,8 @@ datGUI(); //sets up GUI controls like dat gui and progress slider
 //post to banjo
 //css and html validation
 
-
 //font
-// font-family: 'Modak', cursive;
-// font-family: 'Lobster', cursive;
-// font-family: 'Audiowide', cursive;
-//<link href="https://fonts.googleapis.com/css?family=Audiowide|Lobster|Modak&display=swap" rel="stylesheet">
-//documentation:
+//font-family: 'Montserrat', sans-serif;
+//font-family: 'Lobster', cursive;
+//<link href="https://fonts.googleapis.com/css?family=Montserrat|Lobster&display=swap" rel="stylesheet">
 //beach background: https://wallpaperaccess.com/4k-ultra-hd-beach

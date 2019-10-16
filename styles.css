@@ -41,6 +41,10 @@ h1 {
     font-size: 4em;
     margin: 10px;
     font-family: 'Lobster', cursive;
+    background-image: -webkit-linear-gradient(left, red, orange, blue, navy);
+    color:transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
 }
 
 canvas {

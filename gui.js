@@ -238,15 +238,15 @@ function datGUI(){
       toggleHighShelf(highshelfBiquadFilter, controls.Highshelf, audioCtx);
     });
 
-    update(playButton,progressBar);
+    update(playButton,progressBar,controls);
   };
 
   //updates gui logic 
   //e.g. manipulate pixels, play/pause
-  let update = function (playButton,progressBar) {
+  let update = function (playButton,progressBar,controls) {
     //passing playbutton so that this value can be switched
     requestAnimationFrame(function(){
-      update(playButton,progressBar);
+      update(playButton,progressBar,controls);
     });
 
     //changing pixel values
@@ -283,7 +283,8 @@ function datGUI(){
 
     if(duration===currentTime)
     {
-      //playButton.dispatchEvent(new MouseEvent("click"));
+      playButton.dispatchEvent(new MouseEvent("click"));
+      //controls.Play();
     }
 
     document.querySelector("#durationTime").innerHTML =  currentTimeMin+":"+(currentTimeSec>9?"":"0")+currentTimeSec+"/"+

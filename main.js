@@ -326,11 +326,3 @@ function update(){
 
     ctx.restore();
 }
-
-function updateWaves()
-{
-    setInterval(update,3000);
-
-    analyzerNode.getByteTimeDomainData(waveform);
-
-}

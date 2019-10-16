@@ -187,4 +187,13 @@ footer {
         margin-top: 2%;
         height: 3em;
     }
+
+    #audioControls{
+        margin-left: 220px;
+    }
+
+    #guiContainer{
+        position: absolute;
+        margin-left:325px;
+    }
 } 

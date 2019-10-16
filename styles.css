@@ -1,5 +1,5 @@
 * {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
 body {
@@ -40,6 +40,7 @@ select{
 h1 {
     font-size: 4em;
     margin: 10px;
+    font-family: 'Lobster', cursive;
 }
 
 canvas {
@@ -48,6 +49,8 @@ canvas {
 
 footer {
     margin: 10px;
+    padding-bottom: 15px;
+    padding-top: 10px;
 }
 
 .center {
@@ -116,6 +119,8 @@ footer {
     background-color: rgba(256, 255, 0, 0.6);
     border-radius: 40px;
     width: 700px;
+    margin-bottom: 10px;
+    padding-bottom: 3px;
 }
 
 @media screen and (max-width: 3900px){

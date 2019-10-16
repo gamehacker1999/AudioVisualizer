@@ -50,11 +50,13 @@ let image2;
 function init(){
     
     const SOUND_PATH = Object.freeze({
-        sound1: "media/New Adventure Theme.mp3",
-        sound2: "media/Peanuts Theme.mp3",
-        sound3: "media/The Picard Song.mp3",
-        sound4: "media/Beneath The Mask.mp3"
-
+        sound1: "media/PlayThatSong.mp3",
+        sound2: "media/LightsDownLow.mp3",
+        sound3: "media/SmallTownBoy.mp3",
+        sound4: "media/Beneath The Mask.mp3",
+        sound5: "media/New Adventure Theme.mp3",
+        sound6: "media/Peanuts Theme.mp3",
+        sound7: "media/The Picard Song.mp3"
     });
     const NUM_SAMPLES = 128;
     
@@ -183,8 +185,9 @@ function update(){
 
     if(nightTime){
         //creates night time sky
-        //grad.addColorStop(0, 'navy');
-        grad.addColorStop(0.3, 'black');
+        //grad.addColorStop(0, 'blue');
+        //grad.addColorStop(0.3, 'navy');
+        grad.addColorStop(0, 'black');
 
         ctx.fillStyle = grad;
         ctx.fillRect(0,0,canvas.width,canvas.height);

@@ -5,8 +5,7 @@ datGUI(); //sets up GUI controls like dat gui and progress slider
 
 //TODO:
 //external source documentation - dat.gui, clouds
-//documentation - flexbox
-//change pause button to play on end of song
+//documentation - flexbox 
 //night mode additions
 
 //BEFORE SUBMITTING:
@@ -21,3 +20,4 @@ datGUI(); //sets up GUI controls like dat gui and progress slider
 //font-family: 'Lobster', cursive;
 //<link href="https://fonts.googleapis.com/css?family=Lato|Lobster&display=swap" rel="stylesheet">
 //beach background: https://wallpaperaccess.com/4k-ultra-hd-beach
+//boat: http://cliparts.co/cartoon-boat

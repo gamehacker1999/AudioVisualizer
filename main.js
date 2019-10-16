@@ -1,5 +1,5 @@
 import {drawClouds} from './draw.js';
-import {nightTime,cloudSpeed} from './gui.js';
+import {dayTime,cloudSpeed} from './gui.js';
 export {init,audioCtx,highshelfBiquadFilter,lowshelfBiquadFilter,gainNode,audioElement,distortionFilter,convolver,convolverGain};
 
 //canvas variables
@@ -45,6 +45,11 @@ let cloudPos4;
 
 let image1;
 let image2;
+let boatImageLeft;
+let boatImageRight;
+
+let boatPosRight;
+let boatPosLeft;
 
 //initializes all variables
 function init(){
@@ -76,6 +81,10 @@ function init(){
     cloudPos2 = 700;
     cloudPos3 = 900;
     cloudPos4 = 180;
+
+    //boat position
+    boatPosRight = 600;
+    boatPosLeft = 400;
 
     //sun positions
     sunCenterX = canvas.width/2;
@@ -153,6 +162,8 @@ function init(){
     //loading images
     image1 = document.querySelector('#chair1');
     image2 = document.querySelector("#ball");
+    boatImageLeft = document.querySelector("#boatLeft");
+    boatImageRight = document.querySelector("#boatRight");
     
     frameCounter=0;
     
@@ -183,11 +194,11 @@ function update(){
     //saving the current canvas state
     ctx.save();
 
-    if(nightTime){
-        //creates night time sky
-        //grad.addColorStop(0, 'blue');
-        //grad.addColorStop(0.3, 'navy');
-        grad.addColorStop(0, 'black');
+    if(dayTime){
+        //creates day time sky
+        grad.addColorStop(0, 'navy');
+        grad.addColorStop(0.3, 'blue');
+        grad.addColorStop(0.7, '#add8e6');
 
         ctx.fillStyle = grad;
         ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -197,25 +208,36 @@ function update(){
         ctx.fillStyle = '#ffff66'; //light yellow color
         
         //draw moon
+        let moonX = 120;
+        let moonY = 100;
+        let moonRadius = 70;
         ctx.beginPath();
-        ctx.arc(90,100,40,0,Math.PI*2);
+        ctx.arc(moonX,moonY,moonRadius,0,Math.PI*2);
         ctx.closePath();
         ctx.fill();
 
-        ctx.fillStyle = 'black';
+        /*ctx.fillStyle = 'black';
 
         //drawing the circle
         ctx.beginPath();
         ctx.arc(115,100,40,0,Math.PI*2);
         ctx.closePath();
-        ctx.fill();
+        ctx.fill();*/
 
-        //cloud shadows
         for(let i = 0; i<50; i++){
-            if(waveform[i]>max) 
-                max = waveform[i]*0.5;
-        }
+            ctx.save();
+            ctx.translate(moonX,moonY);
+            ctx.rotate(angle*i+15);
+            let width = audioData[i]*0.5;
 
+            //cloud shadows
+            if(waveform[i]>max) {
+                max = waveform[i]*0.5;
+            }
+
+            ctx.fillRect(moonRadius-20,0,width,5);
+            ctx.restore();
+        }
         ctx.restore();
     }
     else{
@@ -320,8 +342,21 @@ function update(){
     drawClouds(cloudPos4,250,max,ctx);
 
     //adding images
+
+    if(dayTime) {
+        boatPosRight+=.5;
+        if((boatPosRight)>canvas.width+10)
+            boatPosRight=-100;
+        ctx.drawImage(boatImageRight,boatPosRight,325); //boat moving right
+
+        boatPosLeft-=.75;
+        if((boatPosLeft)<-100)
+            boatPosLeft=canvas.width+50;
+        ctx.drawImage(boatImageLeft,boatPosLeft,360); //boat moving right
+    }
     ctx.drawImage(image1,300,380); //chair and umbrella
 
+    //beach ball shadows
     ctx.shadowOffsetX = 1;
     ctx.shadowOffsetY=8;
     ctx.shadowColor = '#8a795d';

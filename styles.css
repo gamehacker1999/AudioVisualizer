@@ -61,11 +61,7 @@ footer {
     text-align: center;
 }
 
-#chair1 {
-    display: none;
-}
-
-#ball {
+#chair1, #ball, #boatRight, #boatLeft {
     display: none;
 }
 

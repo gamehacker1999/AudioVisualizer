@@ -3,11 +3,11 @@ import { manipulatePixels } from './draw.js';
 import { audioCtx, highshelfBiquadFilter, lowshelfBiquadFilter, gainNode, audioElement,
    distortionFilter,convolver,convolverGain } from './main.js'
 
-export {datGUI, nightTime,cloudSpeed};
+export {datGUI, dayTime,cloudSpeed};
 
 let brightnessAmount = 100;
 let distortionAmount = 0;
-let nightTime = false; //night or day mode 
+let dayTime = false; //day or sunset mode 
 let maxProgressWidth = 500; //this is max width of progress bar
 let duration; //duration of the current song
 let progressBar; //progress bar
@@ -55,7 +55,7 @@ function datGUI(){
     this.Song = "Beneath The Mask";
     this.Volume = 50;
     this.FullScreen = e => { requestFullscreen(canvas) };
-    this.Night = false;
+    this.Day = false;
     this.Tint = false;
     this.Sepia = false;
     this.Noise = false;
@@ -115,7 +115,7 @@ function datGUI(){
 
     let fModes = gui.addFolder('Modes'); //folder - then just use f1.add(...); and f1.open();
     fModes.domElement.style.fontSize = "10pt";
-    let night = fModes.add(controls, 'Night');
+    let day = fModes.add(controls, 'Day');
 
     let f1 = gui.addFolder('Display'); //folder - then just use f1.add(...); and f1.open();
     f1.domElement.style.fontSize = "10pt";
@@ -193,8 +193,8 @@ function datGUI(){
       duration = audioElement.duration;   
     });
 
-    night.onChange(function(value){
-      nightTime = !nightTime;
+    day.onChange(function(value){
+      dayTime = !dayTime;
     });
 
     tint.onChange(function (value) {

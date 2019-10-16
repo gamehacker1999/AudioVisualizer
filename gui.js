@@ -76,9 +76,29 @@ function datGUI(){
   window.onload = function () {
     let controls = new controlPanel();
     let gui = new dat.GUI({autoPlace: false});
+
+    //if window is greater than 1024 then have gui open else have it closed
+    if(screen.width<=1024||window.innerWidth<=1024){
+      gui.close();
+    }
+
+    else{
+      gui.open();
+    }
+
+    window.onresize = _ =>{
+      if(screen.width<=1024||window.innerWidth<=1024){
+        gui.close();
+      }
+      else{
+        gui.open();
+      }
+    };
+
     gui.domElement.style.fontSize = "7pt";
     let guiContainer = document.querySelector("#guiContainer");
     guiContainer.appendChild(gui.domElement);
+
 
     let playButton = document.querySelector("#playButton");
     playButton.onclick = e =>{
@@ -241,15 +261,15 @@ function datGUI(){
       toggleHighShelf(highshelfBiquadFilter, controls.Highshelf, audioCtx);
     });
 
-    update(playButton,progressBar,controls);
+    update(playButton,progressBar,controls,gui);
   };
 
   //updates gui logic 
   //e.g. manipulate pixels, play/pause
-  let update = function (playButton,progressBar,controls) {
+  let update = function (playButton,progressBar,controls,gui) {
     //passing playbutton so that this value can be switched
     requestAnimationFrame(function(){
-      update(playButton,progressBar,controls);
+      update(playButton,progressBar,controls,gui);
     });
 
     //changing pixel values

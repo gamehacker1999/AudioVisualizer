@@ -114,10 +114,6 @@ function datGUI(){
 
     let cloudSpeedSlider = gui.add(controls,"CloudSpeed",0,50);
 
-    let fModes = gui.addFolder('Modes'); //folder - then just use f1.add(...); and f1.open();
-    fModes.domElement.style.fontSize = "7pt";
-    let night = fModes.add(controls, 'Night');
-
     let f1 = gui.addFolder('Display'); //folder - then just use f1.add(...); and f1.open();
     f1.domElement.style.fontSize = "7pt";
     let tint = f1.add(controls, 'Tint'); //checkbox
@@ -192,10 +188,6 @@ function datGUI(){
       playing=true;
       controls.Play(playButton);   
       duration = audioElement.duration;   
-    });
-
-    night.onChange(function(value){
-      nightTime = !nightTime;
     });
 
     tint.onChange(function (value) {

@@ -95,10 +95,9 @@ function datGUI(){
       }
     };
 
-    //gui.domElement.style.fontSize = "7pt";
+    gui.domElement.style.fontSize = "10pt";
     let guiContainer = document.querySelector("#guiContainer");
     guiContainer.appendChild(gui.domElement);
-
 
     let playButton = document.querySelector("#playButton");
     playButton.onclick = e =>{
@@ -115,11 +114,11 @@ function datGUI(){
     let cloudSpeedSlider = gui.add(controls,"CloudSpeed",0,50);
 
     let fModes = gui.addFolder('Modes'); //folder - then just use f1.add(...); and f1.open();
-    //fModes.domElement.style.fontSize = "7pt";
+    fModes.domElement.style.fontSize = "10pt";
     let night = fModes.add(controls, 'Night');
 
     let f1 = gui.addFolder('Display'); //folder - then just use f1.add(...); and f1.open();
-    //f1.domElement.style.fontSize = "7pt";
+    f1.domElement.style.fontSize = "10pt";
     let tint = f1.add(controls, 'Tint'); //checkbox
     let sepia = f1.add(controls, 'Sepia'); //checkbox    
     let noise = f1.add(controls, 'Noise'); //checkbox 
@@ -128,7 +127,7 @@ function datGUI(){
     let brightnessSlider = f1.add(controls, 'Brightness', 30, 100);
 
     let f2 = gui.addFolder('Effects');
-    //f2.domElement.style.fontSize = "7pt";
+    f2.domElement.style.fontSize = "10pt";
     //converting the effect checkboxes to radio buttons
     let highshelf = f2.add(controls, 'Highshelf').listen();
     let highshelfInput = [].slice.call(highshelf.domElement.childNodes);
@@ -145,7 +144,7 @@ function datGUI(){
     let reverbSlider = f2.add(controls,'ReverbValue',0,100);
 
     let f3 = gui.addFolder('Wave Distortion');
-    //f3.domElement.style.fontSize = "7pt";
+    f3.domElement.style.fontSize = "10pt";
     let distortion = f3.add(controls,'Distortion');
     let distortionSlider = f3.add(controls,'DistortionValue', 0, 100);
     

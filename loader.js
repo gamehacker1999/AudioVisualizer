@@ -6,8 +6,8 @@ datGUI(); //sets up GUI controls like dat gui and progress slider
 //TODO:
 //external source documentation - dat.gui, clouds
 //documentation - flexbox
-//media queries - range of displays - 1024x768
 //change pause button to play on end of song
+//night mode additions
 
 //BEFORE SUBMITTING:
 //comments for every function

@@ -3,8 +3,7 @@
 }
 
 body {
-    /*background-color: green;*/
-    background-image: url('/images/beachbackground2.jpg');
+    background-image: url('images/beachbackground2.jpg');
     background-size: cover;
 }
 
@@ -131,6 +130,15 @@ footer {
 
     #audioControls{
         margin-left: 40%;
+        margin-top: 2%;
+        height: 3em;
+    }
+} 
+
+@media screen and (max-width: 2560px){
+
+    #audioControls{
+        margin-left: 37%;
         margin-top: 2%;
         height: 3em;
     }

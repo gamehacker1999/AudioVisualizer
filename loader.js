@@ -11,6 +11,12 @@ datGUI(); //sets up GUI controls like dat gui and progress slider
 //documentation - flexbox
 //media queries - range of displays - 1024x768
 
+//reverberate
+//title, website look - background image
+//change songs
+//background tiling
+
+
 //BEFORE SUBMITTING:
 //comments for every function
 //var
@@ -18,8 +24,11 @@ datGUI(); //sets up GUI controls like dat gui and progress slider
 //post to banjo
 //css and html validation
 
+
 //font
 // font-family: 'Modak', cursive;
 // font-family: 'Lobster', cursive;
 // font-family: 'Audiowide', cursive;
 //<link href="https://fonts.googleapis.com/css?family=Audiowide|Lobster|Modak&display=swap" rel="stylesheet">
+//documentation:
+//beach background: https://wallpaperaccess.com/4k-ultra-hd-beach

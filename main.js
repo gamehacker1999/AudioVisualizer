@@ -54,6 +54,7 @@ let boatPosLeft;
 //initializes all variables
 function init(){
     
+    //songs
     const SOUND_PATH = Object.freeze({
         sound1: "media/PlayThatSong.mp3",
         sound2: "media/LightsDownLow.mp3",
@@ -124,6 +125,7 @@ function init(){
 
     let echoURL = "media/echo.wav";
 
+    //adds reverb effect
     let impulseResponse = new XMLHttpRequest();
     impulseResponse.open("GET",echoURL,true);
     impulseResponse.responseType = "arraybuffer";
@@ -181,9 +183,11 @@ function update(){
     
     frameCounter++;
         
+    //clears and resets background
     ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
     let grad = ctx.createLinearGradient(0,0,0,ctx.canvas.height);
     
+    //gets audio information
     analyzerNode.getByteFrequencyData(audioData);
     analyzerNode.getByteTimeDomainData(waveform);
 
@@ -194,6 +198,7 @@ function update(){
     //saving the current canvas state
     ctx.save();
 
+    //day time mode
     if(dayTime){
         //creates day time sky
         grad.addColorStop(0, 'navy');
@@ -216,16 +221,10 @@ function update(){
         ctx.closePath();
         ctx.fill();
 
-        /*ctx.fillStyle = 'black';
-
-        //drawing the circle
-        ctx.beginPath();
-        ctx.arc(115,100,40,0,Math.PI*2);
-        ctx.closePath();
-        ctx.fill();*/
-
         for(let i = 0; i<50; i++){
             ctx.save();
+
+            //draw sun rays
             ctx.translate(daySunX,daySunY);
             ctx.rotate(angle*i+15);
             let width = audioData[i]*0.5;
@@ -240,6 +239,7 @@ function update(){
         }
         ctx.restore();
     }
+    //sunset mode
     else{
         //creates sunset gradient
         grad.addColorStop(0,'navy'); //#fb7ba2
@@ -249,18 +249,6 @@ function update(){
 
         ctx.fillStyle = grad;
         ctx.fillRect(0,0,canvas.width,canvas.height);
-
-        //sun movement
-        //sunCenterX+=0.5;
-        //sunCenterY+=0.5;
-        
-        if(sunCenterY>canvas.height+80){
-            sunCenterX=-50;
-            sunCenterY=-50;
-        }
-        
-        grad.addColorStop(0,'#fc354c');
-        grad.addColorStop(1, '#0fbabc');
         
         ctx.fillStyle = 'yellow';
         ctx.strokeStyle = 'white';
@@ -275,6 +263,8 @@ function update(){
         //sun rays and cloud shadows
         for(let i=0;i<50;i++){
             ctx.save();
+
+            //sun rays
             ctx.translate(sunCenterX,sunCenterY);
             ctx.rotate(angle*i+15);
             let width = audioData[i]*0.5;
@@ -297,20 +287,15 @@ function update(){
     ctx.fillRect(0,canvas.height/1.3,canvas.width,canvas.height);
     
     //waves
-    
     ctx.beginPath();
     ctx.moveTo(0,canvas.height*2/3);
     for(let i=0;i<80;i++){
-        
-        //ctx.save();
 
         let height = audioData[i]*0.3;
         
         ctx.lineTo(i*13,canvas.height*2/3+(height+60.5));
         ctx.fillStyle='blue';
         ctx.strokeStyle = 'blue';
-        //ctx.fillRect(i*12.5,canvas.height*2/3,13,height+60.5);
-        //ctx.restore();
     }
     ctx.lineTo(canvas.width,canvas.height*2/3);
     ctx.fillStyle='blue';
@@ -342,7 +327,7 @@ function update(){
     drawClouds(cloudPos4,250,max,ctx);
 
     //adding images
-
+    //boat movement if on day  mode
     if(dayTime) {
         boatPosRight+=.5;
         if((boatPosRight)>canvas.width+10)
@@ -352,8 +337,9 @@ function update(){
         boatPosLeft-=.75;
         if((boatPosLeft)<-100)
             boatPosLeft=canvas.width+50;
-        ctx.drawImage(boatImageLeft,boatPosLeft,360); //boat moving right
+        ctx.drawImage(boatImageLeft,boatPosLeft,360); //boat moving left
     }
+    
     ctx.drawImage(image1,300,380); //chair and umbrella
 
     //beach ball shadows

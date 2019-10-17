@@ -9,7 +9,6 @@ let brightnessAmount = 100;
 let distortionAmount = 0;
 let dayTime = false; //day or sunset mode 
 let maxProgressWidth = 500; //this is max width of progress bar
-let duration; //duration of the current song
 let progressBar; //progress bar
 let cloudSpeed=1;; //speed of the clouds
 
@@ -52,6 +51,7 @@ function datGUI(){
       }
     };
 
+    //all controls with defaults
     this.Song = "Beneath The Mask";
     this.Volume = 50;
     this.FullScreen = e => { requestFullscreen(canvas) };
@@ -86,6 +86,7 @@ function datGUI(){
       gui.open();
     }
 
+    //check if window is resized for keeping controls panel open or closed
     window.onresize = _ =>{
       if(screen.width<=1024||window.innerWidth<=1024){
         gui.close();
@@ -99,6 +100,7 @@ function datGUI(){
     let guiContainer = document.querySelector("#guiContainer");
     guiContainer.appendChild(gui.domElement);
 
+    //play music on play button click
     let playButton = document.querySelector("#playButton");
     playButton.onclick = e =>{
       controls.Play();
@@ -106,18 +108,20 @@ function datGUI(){
 
     progressBar = document.querySelector("#progressBar");
 
+    //basic controls
     gui.add(controls, 'FullScreen'); //click
     let trackSelect = gui.add(controls, 'Song', ["Play That Song", "Lights Down Low", "Small Town Boy","Beneath The Mask", "New Adventure Theme", "Peanuts Theme",
     "The Picard Song"]); //drop down
     let volumeSlider = gui.add(controls, 'Volume', 0, 100); //slider from -5 to 5
-
     let cloudSpeedSlider = gui.add(controls,"CloudSpeed",0,50);
 
-    let fModes = gui.addFolder('Modes'); //folder - then just use f1.add(...); and f1.open();
+    //modes
+    let fModes = gui.addFolder('Modes'); //folder for modes
     fModes.domElement.style.fontSize = "10pt";
     let day = fModes.add(controls, 'Day');
 
-    let f1 = gui.addFolder('Display'); //folder - then just use f1.add(...); and f1.open();
+    //display effects
+    let f1 = gui.addFolder('Display'); //folder for display types
     f1.domElement.style.fontSize = "10pt";
     let tint = f1.add(controls, 'Tint'); //checkbox
     let sepia = f1.add(controls, 'Sepia'); //checkbox    
@@ -126,8 +130,10 @@ function datGUI(){
     let grayScale = f1.add(controls, 'GrayScale'); //checkbox
     let brightnessSlider = f1.add(controls, 'Brightness', 30, 100);
 
+    //audio effects
     let f2 = gui.addFolder('Audio Effects');
     f2.domElement.style.fontSize = "10pt";
+
     //converting the effect checkboxes to radio buttons
     let highshelf = f2.add(controls, 'Highshelf').listen();
     let highshelfInput = [].slice.call(highshelf.domElement.childNodes);
@@ -143,6 +149,7 @@ function datGUI(){
 
     let reverbSlider = f2.add(controls,'ReverbValue',0,100);
 
+    //wave distortion
     let f3 = gui.addFolder('Wave Distortion');
     f3.domElement.style.fontSize = "10pt";
     let distortion = f3.add(controls,'Distortion');
@@ -150,6 +157,7 @@ function datGUI(){
     
     let progressBar2 = document.querySelector("#progressBar2");
 
+    //changes song to time frame of click so you can go forward/back in the song
     document.querySelector("#progressBar2").onclick = (e)=>{
       let percent = e.offsetX/e.target.offsetWidth;
       audioElement.currentTime = percent*audioElement.duration;
@@ -284,6 +292,7 @@ function datGUI(){
       playButton.src="images/playButton.png";
     }
 
+    //progress bar time
     let ratio = audioElement.currentTime/audioElement.duration;
 
     let currentTime = audioElement.currentTime;
@@ -306,12 +315,12 @@ function datGUI(){
     if(duration===currentTime)
     {
       playButton.dispatchEvent(new MouseEvent("click"));
-      //controls.Play();
     }
 
     document.querySelector("#durationTime").innerHTML =  currentTimeMin+":"+(currentTimeSec>9?"":"0")+currentTimeSec+"/"+
       durationMin+":"+(durationSec>9?"":"0")+durationSec;
 
+    //adjusts progress bar slider accordingly
     let curWidth = maxProgressWidth*ratio;
     progressBar.style.width = curWidth+"px";
     let remaining = 500-curWidth;

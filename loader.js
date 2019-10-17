@@ -5,18 +5,17 @@ datGUI(); //sets up GUI controls like dat gui and progress slider
 
 //TODO:
 //external source documentation - dat.gui, clouds
-//documentation - flexbox
 //comments
 //console errors or exceptions
 //tooltips?
 //dropdown arrow
 //all variables lowercase
 //Well-commented code. Each and every function gets a comment indicating what it does
-//Give credit and a link for all code (fragments or otherwise) that are not written you - do so both in the code comments and in your documentation. 
-//Cite the code source both in the source code itself as a comment, and in your final documentation
+//Cite the code source and link both in the source code itself as a comment, and in your final documentation
 //no inline event handlers
 //no console log calls
 //make sure everything works on banjo
+//function summary
 
 //BEFORE SUBMITTING:
 //comments for every function

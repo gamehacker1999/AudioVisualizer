@@ -14,6 +14,7 @@ function drawClouds(x,y,max=0, ctx){
     ctx.strokeStyle = 'white';
     ctx.fillStyle='white';
 
+    //draw cloud
     ctx.beginPath();
     ctx.moveTo(x,y);
     ctx.bezierCurveTo(x-40,y+20,x-40,y+70,x+60,y+70);
@@ -26,7 +27,6 @@ function drawClouds(x,y,max=0, ctx){
     ctx.stroke();
     ctx.fill();
     ctx.restore();
-    
 }
 
 //changes the look of the canvas using bitmap manipulation
@@ -34,34 +34,33 @@ function drawClouds(x,y,max=0, ctx){
 function manipulatePixels(ctx, tintRed, invert, noise, sepia,greyScale,brightnessAmount){
     
     let imageData = ctx.getImageData(0,0,ctx.canvas.width,ctx.canvas.height);
-    
     let data = imageData.data;
     let length = data.length;
     let width = imageData.width;
     
     for(let i = 0;i<length;i+=4){
         
+        //tint red if checked
         if(tintRed)
             data[i]+=100;
         
+        //invert if checked
         if(invert){
             data[i]=255-data[i];
             data[i+1]=255-data[i+1];
-            data[i+2]=255-data[i+2];
-            
+            data[i+2]=255-data[i+2];    
         }
         
+        //create noise
         if(noise&&Math.random()<0.1){
             data[i]=data[i+1]=data[i+2]=128;
-            
-            //data[i+3]=255; //alpha
         }
         
+        //sepia
         if(sepia){
             let inputRed = data[i];
             let inputGreen = data[i+1];
             let inputBlue = data[i+2];
-            
             
             data[i]=(inputRed * .393) + (inputGreen *.769) + (inputBlue * .189)
             data[i+1]=(inputRed * .349) + (inputGreen *.686) + (inputBlue * .168)
@@ -74,9 +73,9 @@ function manipulatePixels(ctx, tintRed, invert, noise, sepia,greyScale,brightnes
                 data[i+1]=255;    
             if(data[i+2]>255)
                 data[i+2]=255;
-            
         }
 
+        //grayscale
         if(greyScale){
             let v = (data[i]+data[i+1]+data[i+2])/3;
             data[i]=data[i+1]=data[i+2] = v;
@@ -87,7 +86,5 @@ function manipulatePixels(ctx, tintRed, invert, noise, sepia,greyScale,brightnes
         data[i+1] = data[i+1] * (brightnessAmount/100);
         data[i+2] = data[i+2] * (brightnessAmount/100);
     }
-    
     ctx.putImageData(imageData,0,0);
-
 }

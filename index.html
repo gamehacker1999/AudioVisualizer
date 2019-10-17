@@ -3,11 +3,9 @@
 
 <head>
     <title>Beach Visualizer</title>
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css"
-        integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css" type="text/css"> <!--css file-->
-    <script src="dat.gui/dat.gui-master/build/dat.gui.min.js"></script>
+    <script src="dat.gui/dat.gui-master/build/dat.gui.min.js"></script> <!--dat.gui-->
     <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet"> <!--main font-->
     <link href="https://fonts.googleapis.com/css?family=Lobster&display=swap" rel="stylesheet"> <!--title font-->
 </head>
@@ -19,7 +17,7 @@
             <canvas width="800" height="600"></canvas>
             <div id="guiContainer"></div>
         </div>
-        <div id="audioControls">
+        <div id="audioControls"> <!--progress indicator-->
             <img src="images/playButton.png" alt="playButton" id="playButton">
             <div id="progressBar2"><div id="progressBar"></div></div>
             <p id="durationTime"></p>
@@ -27,10 +25,10 @@
         <footer class="center">Copyright &copy; 2019 - Ingrida Ivaska and Shubham Sachdeva</footer>
     </div>
     <audio></audio>
-    <img alt="Chair" src="images/chair2.png" id="chair1">
+    <img alt="Chair" src="images/chair2.png" id="chair1"> <!--https://freepngimg.com/png/28611-beach-transparent-background-->
     <img alt="Beach ball" src="images/beachBall.png" id="ball">
-    <img alt="Boat floating left" src="images/boatleft.png" id="boatLeft">
-    <img alt="Boat floating right" src="images/boatright.png" id="boatRight">
+    <img alt="Boat floating left" src="images/boatleft.png" id="boatLeft"> <!--http://cliparts.co/cartoon-boat-->
+    <img alt="Boat floating right" src="images/boatright.png" id="boatRight"> <!--http://cliparts.co/cartoon-boat-->
     <script src="loader.js" type="module"></script>
 </body>
 </html>

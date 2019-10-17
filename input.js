@@ -9,13 +9,12 @@ function requestFullscreen(element) {
     else if (element.mozRequestFullscreen) {
         element.mozRequestFullscreen();
     }
-    else if (element.mozRequestFullScreen) { // camel-cased 'S' was changed to 's' in spec
+    else if (element.mozRequestFullScreen) {
         element.mozRequestFullScreen();
     } 
     else if (element.webkitRequestFullscreen) {
         element.webkitRequestFullscreen();
     }
-    // .. and do nothing if the method is not supported
 }
 
 //toggles the treble

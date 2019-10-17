@@ -67,7 +67,7 @@ function datGUI(){
     this.Lowshelf = false;
     this.NoEffect = true;
     this.Distortion = false;
-    this.DistortionValue = 0;
+    this.Amount = 0;
     this.Reverb = false;
     this.ReverbValue = 0;
     this.CloudSpeed = 10;
@@ -154,7 +154,7 @@ function datGUI(){
     let f3 = gui.addFolder('Wave Distortion');
     f3.domElement.style.fontSize = "10pt";
     let distortion = f3.add(controls,'Distortion');
-    let distortionSlider = f3.add(controls,'DistortionValue', 0, 100);
+    let distortionSlider = f3.add(controls,'Amount', 0, 100);
     
     let progressBar2 = document.querySelector("#progressBar2");
 

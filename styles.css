@@ -122,6 +122,15 @@ footer {
     padding-bottom: 3px;
 }
 
+.dg .property-name{
+    width: 35%;
+}
+
+.dg .cr.string {
+    width: 80%;
+    padding-right: 17%;
+}
+
 @media screen and (max-width: 3900px){
     #audioControls{
         margin-left: 43%;

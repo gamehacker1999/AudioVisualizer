@@ -13,6 +13,7 @@ let progressBar; //progress bar
 let cloudSpeed=1;; //speed of the clouds
 
 //wrapper function for all dat gui code
+//reference: https://workshop.chromeexperiments.com/examples/gui/#1--Basic-Usage
 function datGUI(){
   //getting canvas and ctx
   let canvas = document.querySelector('canvas');
@@ -183,7 +184,7 @@ function datGUI(){
     });
 
     reverbSlider.onChange(function(value){
-      convolverGain.gain.value = value/70.0;
+      convolverGain.gain.value = value/50.0;
     });
 
     cloudSpeed = controls.CloudSpeed/10.0;

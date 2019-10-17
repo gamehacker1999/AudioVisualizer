@@ -56,10 +56,10 @@ function init(){
     
     //songs
     const SOUND_PATH = Object.freeze({
-        sound1: "media/PlayThatSong.mp3",
-        sound2: "media/LightsDownLow.mp3",
-        sound3: "media/SmallTownBoy.mp3",
-        sound4: "media/Beneath The Mask.mp3",
+        sound1: "media/PlayThatSong.mp3", //Play That Song by Train
+        sound2: "media/LightsDownLow.mp3", //Lights Down Low by MAX
+        sound3: "media/SmallTownBoy.mp3", //Small Town Boy by Dustin Lynch
+        sound4: "media/Beneath The Mask.mp3", //Beneath the Mask by Lyn Inaizumi
         sound5: "media/New Adventure Theme.mp3",
         sound6: "media/Peanuts Theme.mp3",
         sound7: "media/The Picard Song.mp3"

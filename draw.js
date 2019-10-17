@@ -1,6 +1,7 @@
 export {drawClouds, manipulatePixels};
 
 //draws the clouds at the top of canvas using bezier curves
+//reference: https://www.html5canvastutorials.com/advanced/html5-canvas-save-drawing-as-an-image/ 
 function drawClouds(x,y,max=0, ctx){
     ctx.save();
 
